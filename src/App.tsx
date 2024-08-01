@@ -1,10 +1,15 @@
 import { Button } from "@/components/ui/button.tsx";
-import { Input, Rating } from "@mantine/core";
+import { Rating, TextInput } from "@mantine/core";
 
 function App() {
   return (
     <main className={"w-full h-full flex justify-center items-center flex-col"}>
-      <Input placeholder="Input component" />
+      <TextInput
+        label="Test"
+        description="Description"
+        size="lg"
+        placeholder="Test"
+      />
       <Button>Test</Button>
       <Rating defaultValue={2} />
     </main>
