@@ -1,27 +1,25 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import './index.css'
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "@/App.tsx";
-import { MantineProvider } from '@mantine/core';
+import { MantineProvider } from "@mantine/core";
 
 const router = createBrowserRouter([
-    {
-        path: "/",
-        element: (
-            <App />
-        ),
-    },
-    {
-        path: "about",
-        element: <div>About</div>,
-    },
+  {
+    path: "/",
+    element: <App />,
+  },
+  {
+    path: "about",
+    element: <div>About</div>,
+  },
 ]);
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-      <MantineProvider>
+    <MantineProvider>
       <RouterProvider router={router} />
-      </MantineProvider>
+    </MantineProvider>
   </React.StrictMode>,
-)
+);
