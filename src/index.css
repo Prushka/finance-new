@@ -1,6 +1,11 @@
-@tailwind base;
+@import "@mantine/dates/styles.css";
+@import "@mantine/core/styles.css";
+
 @tailwind components;
 @tailwind utilities;
+@layer tailwind {
+  @tailwind base;
+}
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;

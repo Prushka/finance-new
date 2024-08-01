@@ -1,16 +1,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import {createBrowserRouter, Link, RouterProvider} from "react-router-dom";
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import App from "@/App.tsx";
+import { MantineProvider } from '@mantine/core';
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: (
-            <div>
-                <h1>Hello World</h1>
-                <Link to="about">About Us</Link>
-            </div>
+            <App />
         ),
     },
     {
@@ -21,6 +20,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
+      <MantineProvider>
       <RouterProvider router={router} />
+      </MantineProvider>
   </React.StrictMode>,
 )
