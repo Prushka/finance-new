@@ -3,7 +3,7 @@ import { Rating, TextInput } from "@mantine/core";
 
 function App() {
   return (
-    <main className={"w-full h-full flex justify-center items-center flex-col"}>
+    <div className={"w-full h-full flex items-center flex-col gap-4"}>
       <TextInput
         label="Test"
         description="Description"
@@ -12,7 +12,7 @@ function App() {
       />
       <Button>Test</Button>
       <Rating defaultValue={2} />
-    </main>
+    </div>
   );
 }
 
