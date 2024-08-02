@@ -1,5 +1,6 @@
 @import "@mantine/dates/styles.css";
 @import "@mantine/core/styles.css";
+@import "@mantine/dates/styles.css";
 
 @tailwind components;
 @tailwind utilities;
@@ -14,7 +15,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #131313;
+  /* background-color: #131313; */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
