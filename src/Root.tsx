@@ -28,6 +28,7 @@ export default function Root() {
         <nav className="h-full max-w-[600px] mx-auto grid grid-cols-4">
           {NAV_BUTTONS.map(({ label, to, icon }) => (
             <NavLink
+              key={to}
               to={to}
               className={({ isActive }) => {
                 return `h-full flex flex-col items-center justify-center ${isActive ? "text-black bg-gray-100" : "text-gray-500"} hover:text-black hover:bg-gray-100`;
