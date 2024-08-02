@@ -1,7 +1,6 @@
-import { Button } from "@/components/ui/button.tsx";
-import { Rating, TextInput } from "@mantine/core";
+import { TextInput, Rating, Button } from "@mantine/core";
 
-function App() {
+export default function Home() {
   return (
     <div className={"w-full h-full flex items-center flex-col gap-4"}>
       <TextInput
@@ -15,5 +14,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
