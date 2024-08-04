@@ -21,7 +21,7 @@ export default function Root() {
         height: 56,
       }}
     >
-      <AppShell.Main>
+      <AppShell.Main className="bg-gray-50">
         <Outlet />
       </AppShell.Main>
       <AppShell.Footer>

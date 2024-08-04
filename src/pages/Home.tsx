@@ -1,4 +1,4 @@
-import { Avatar, Card } from "@mantine/core";
+import { Avatar, Card, NumberFormatter, Progress } from "@mantine/core";
 import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -24,7 +24,44 @@ export default function Home() {
         </HomeCard>
 
         <HomeCard title="Budget" to="/budget">
-          <Card.Section inheritPadding>Budget progress + streak</Card.Section>
+          <Card.Section inheritPadding withBorder py="sm">
+            <div className="flex mb-2 font-semibold justify-between items-center text-lg">
+              <h2>August 2024 Budget</h2>
+              <NumberFormatter
+                value={2800}
+                prefix="$"
+                thousandSeparator
+                decimalScale={2}
+              />
+            </div>
+            <div className="flex gap-1 items-center">
+              <Progress
+                size="lg"
+                radius="xl"
+                value={(643.32 / 2800) * 100}
+                className="w-full"
+                color="indigo"
+              />
+              <p className="text-sm text-gray-500 text-right w-[125px]">
+                <NumberFormatter
+                  value={643.32}
+                  prefix="$"
+                  thousandSeparator
+                  decimalScale={2}
+                />{" "}
+                left
+              </p>
+            </div>
+          </Card.Section>
+          <Card.Section
+            inheritPadding
+            py="sm"
+            className="flex items-center gap-2"
+          >
+            <span className="text-3xl font-bold">5</span>{" "}
+            <span>months of staying on budget!</span>
+            🎉
+          </Card.Section>
         </HomeCard>
 
         <HomeCard title="Recent transactions" to="/transactions">
