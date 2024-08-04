@@ -196,7 +196,7 @@ export default function Transactions() {
           </div>
           <div className="flex justify-between gap-2">
             <p className="text-sm text-gray-500">Status</p>
-            <p>{transaction.pending ? "Pending" : "Posted"}</p>
+            <p>{transaction.pending ? "Pending" : "Processed"}</p>
           </div>
           <div className="flex justify-between items-center gap-2">
             <p className="text-sm text-gray-500">Total</p>
