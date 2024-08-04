@@ -89,21 +89,26 @@ export default function Budget() {
   const monthlySpentPercentage = (monthlySpent / monthlyTotal) * 100;
 
   const editButton = isCurrentMonth && (
-    <Button
-      onClick={() => {
-        setIsEditing((prev) => !prev);
-      }}
-    >
-      {!isEditing ? (
-        <>
-          <PencilIcon className="size-4 mr-2" /> Edit budget
-        </>
-      ) : (
-        <>
-          <SaveIcon className="size-4 mr-2" /> Save budget
-        </>
-      )}
-    </Button>
+    <div className={"flex gap-4"}>
+      {isEditing && <Button variant={"secondary"} onClick={() => {
+            setIsEditing((prev) => !prev);
+      }}>Cancel</Button>}
+      <Button className={"w-36"}
+          onClick={() => {
+            setIsEditing((prev) => !prev);
+          }}
+      >
+        {!isEditing ? (
+            <>
+              <PencilIcon className="size-4 mr-2" /> Edit budget
+            </>
+        ) : (
+            <>
+              <SaveIcon className="size-4 mr-2" /> Save budget
+            </>
+        )}
+      </Button>
+    </div>
   );
   const monthPicker = (
     <div>
