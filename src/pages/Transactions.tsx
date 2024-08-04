@@ -83,7 +83,7 @@ export default function Transactions() {
   return (
     <div>
       <div className="z-50 sticky top-0 bg-white p-4 border-b-[1px] border-b-gray-300 flex flex-col gap-4">
-        <div className="flex justify-between">
+        <div className="flex justify-between items-center">
           <h1 className="text-xl font-bold">Transactions</h1>
           <ActionIcon color="black" variant="outline">
             <FilterIcon className="size-4" />
