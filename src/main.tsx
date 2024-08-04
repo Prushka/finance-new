@@ -10,10 +10,13 @@ import Planning from "./pages/Planning";
 import Budget from "./pages/Budget";
 import Transactions from "./pages/Transactions";
 import { RecoilRoot } from "recoil";
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 const theme = createTheme({
   primaryColor: "indigo",
 });
+
+serviceWorkerRegistration.register();
 
 const router = createHashRouter([
   {
