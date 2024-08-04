@@ -52,7 +52,7 @@ export default function Home() {
                   <Button
                   onClick={(e)=>{
                     e.stopPropagation()
-                    navigate("/add")
+                    navigate("/accounts-add")
                   }}
                   >Add an account</Button>
                 </div>
@@ -60,7 +60,7 @@ export default function Home() {
                     <Row2 icon={
                   <img src={img} className={"w-10 h-10 rounded-full"}/>
                 } name={name} description={`${Object.values(accounts).length} accounts`} value={
-                    `${Object.values(accounts).reduce(
+                    `$${Object.values(accounts).reduce(
                         (acc, {balance}) => acc + balance, 0
                     ).toFixed(2)}`
                   }/>

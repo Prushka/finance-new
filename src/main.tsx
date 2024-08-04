@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {createHashRouter, RouterProvider} from "react-router-dom";
 import Root from "@/Root.tsx";
 import { createTheme, MantineProvider } from "@mantine/core";
 import Home from "./pages/Home";
@@ -15,7 +15,7 @@ const theme = createTheme({
   primaryColor: "indigo",
 });
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: <Root />,
@@ -29,7 +29,7 @@ const router = createBrowserRouter([
         element: <Accounts />,
       },
       {
-        path: "add",
+        path: "accounts-add",
         element: <AddAccount />
       },
       {

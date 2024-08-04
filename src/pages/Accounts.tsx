@@ -46,13 +46,23 @@ export function CO() {
 
 const options = ["1M", "3M", "6M", "1Y", "ALL"]
 
-function DateSelect() {
-    const [selected, setSelected] = useState("1M");
+export function TabGroup({options,
+                         className
+                         }: { options: string[], className?: string }) {
+    const [selected, setSelected] = useState(options[0]);
     return <div className={"flex p-1 rounded-xl w-full bg-gray-100 gap-2 " +
-        "justify-between border border-gray-800"}>
+        `justify-between border border-gray-800 ${className}`}>
         {options.map((o) => <Button variant={"ghost"} key={o} className={`rounded-lg border 
          ${selected === o ? "!bg-white border-gray-800" : "border-gray-100"}`}
                                     onClick={() => setSelected(o)}>{o}</Button>)}
+    </div>
+}
+
+export function TabGroup2({options, className, selected, setSelected}: { options: string[], className?: string, selected: string, setSelected: any }) {
+    return <div className={`flex gap-2 ${className}`}>
+        {options.map((o) =>
+            <Button key={o} variant={selected === o ? "default" : "ghost"}
+                    onClick={() => setSelected(o)}>{o}</Button>)}
     </div>
 }
 
@@ -68,7 +78,7 @@ export function AccountDetails({bank}: { bank: Bank }) {
                     <ArrowLeftIcon/>
                 </Link>
                 <div className={"flex gap-2"}>
-                    <img src={"/" + bank.img} className={"w-8 h-8 rounded-full"}/>
+                    <img src={"./" + bank.img} className={"w-8 h-8 rounded-full"}/>
                 </div>
             </div>
         </div>
@@ -89,7 +99,7 @@ export function AccountDetails({bank}: { bank: Bank }) {
                 </CardContent>
                 <CardFooter>
 
-                    <DateSelect/>
+                    <TabGroup options={options}/>
                 </CardFooter>
             </Card>
 
@@ -328,7 +338,7 @@ export default function Accounts() {
         <div className="z-50 sticky top-0 bg-white p-4 border-b-[1px] border-b-gray-300 flex flex-col gap-6">
             <div className="flex justify-between items-center w-full">
                 <h1 className="text-xl font-bold">Accounts</h1>
-                <Link to={"/add"}>
+                <Link to={"/accounts-add"}>
                     <PlusIcon/>
                 </Link>
             </div>
@@ -336,7 +346,7 @@ export default function Accounts() {
         <div className={"flex flex-col gap-6 p-6"}>
             {Object.values(acc).length === 0 ?
                 <Card onClick={() => {
-                    navigate("/add")
+                    navigate("/accounts-add")
                 }}>
                     <CardHeader>
                         <CardTitle>You don't have any accounts yet</CardTitle>
@@ -468,7 +478,7 @@ function BankCard({bank}: { bank: Bank }) {
 }
 
 function AccountRow({a}: { a: Account }) {
-    return <Row2 name={a.name} description={a.description} icon={a.icon} value={a.balance.toFixed(2)}/>
+    return <Row2 name={a.name} description={a.description} icon={a.icon} value={'$'+a.balance.toFixed(2)}/>
 }
 
 export function Row2({icon, name, description, value}: { icon: any, name: string, description: string, value: string }) {
@@ -483,7 +493,7 @@ export function Row2({icon, name, description, value}: { icon: any, name: string
             </div>
         </div>
         <div className={"flex gap-2 self-start"}>
-            <p className={"text-lg"}>${value}</p>
+            <p className={"text-lg"}>{value}</p>
         </div>
     </div>
 }
