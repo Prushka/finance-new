@@ -98,3 +98,7 @@ body,
   padding: 0;
   scroll-behavior: smooth;
 }
+
+
+.f-drawer .mantine-Drawer-body {
+}
