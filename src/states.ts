@@ -23,7 +23,7 @@ export const scheduleState: RecoilState<any[]> =
             [
                 {
                     type: "Rent",
-                    amount: 1600,
+                    amount: 2200,
                     date: "2024-08-10",
                     si: "expense",
                     key: "1",

@@ -327,7 +327,7 @@ export function AddAccount() {
             src={"td.png"}
             className={"object-cover w-24 h-24 rounded-full"}
           />
-          <p className={"text-md"}>We will redirect you to TD...</p>
+          <p className={"text-md font-medium"}>We will redirect you to TD</p>
           <Card className={"w-full flex flex-col p-4 gap-4"}>
             <div className={"flex gap-3 items-center"}>
               <div
@@ -365,7 +365,7 @@ export function AddAccount() {
             className={"flex gap-3 items-center mt-auto text-gray-500 text-sm"}
           >
             <p>
-              Read our <span className={"underline"}>terms of services</span>!
+              Read our <span className={"underline cursor-pointer"}>terms of services</span>!
             </p>
           </div>
           <Button
@@ -404,7 +404,7 @@ export function AddAccount() {
             src={"co.webp"}
             className={"object-cover w-24 h-24 rounded-full"}
           />
-          <p className={"text-md"}>We will redirect you to Capital One...</p>
+          <p className={"text-md font-medium"}>We will redirect you to Capital One</p>
           <Card className={"w-full flex flex-col p-4 gap-4"}>
             <div className={"flex gap-3 items-center"}>
               <div
@@ -442,7 +442,7 @@ export function AddAccount() {
             className={"flex gap-3 items-center mt-auto text-gray-500 text-sm"}
           >
             <p>
-              Read our <span className={"underline"}>terms of services</span>!
+              Read our <span className={"underline cursor-pointer"}>terms of services</span>!
             </p>
           </div>
           <Button
@@ -615,11 +615,7 @@ function BankCard({ bank }: { bank: Bank }) {
       <CardHeader>
         <div className={"flex justify-between items-center"}>
           <div className={"flex gap-4 items-center"}>
-            <div
-              className={`w-12 h-12 rounded-xl flex justify-center items-center ${bank.color.bg}`}
-            >
-              <LandmarkIcon size={24} className={bank.color.text} />
-            </div>
+            <img src={bank.img} className={'w-12 h-12 rounded-full'}/>
             <div className={"flex flex-col h-full justify-center gap-1"}>
               <CardTitle>{bank.name}</CardTitle>
               <CardDescription>
