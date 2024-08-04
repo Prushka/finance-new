@@ -240,7 +240,7 @@ export default function Budget() {
 
   return (
     <div>
-      <div className="z-50 sticky top-0 bg-white p-4 border-b-[1px] border-b-gray-300 flex flex-col gap-6">
+      <div className="z-50 sticky top-0 bg-white p-4 border-b-[1px] border-b-gray-300">
         <h1 className="text-xl font-bold">Budget</h1>
       </div>
 

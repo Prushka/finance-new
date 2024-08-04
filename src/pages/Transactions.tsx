@@ -12,7 +12,6 @@ import {
   ShoppingBag,
   Utensils,
 } from "lucide-react";
-import { Fragment } from "react/jsx-runtime";
 
 export default function Transactions() {
   const transactionsDataByDate = [
