@@ -1,9 +1,10 @@
 import { Avatar, Card, NumberFormatter, Progress } from "@mantine/core";
 import { ChevronRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useRecoilState} from "recoil";
 import {accountsState} from "@/states.ts";
 import {Row2} from "@/pages/Accounts.tsx";
+import {Button} from "@/components/ui/button.tsx";
 
 const RECENT_TRANSACTIONS = [
   {
@@ -29,6 +30,7 @@ const RECENT_TRANSACTIONS = [
 ];
 export default function Home() {
   const [acc,] = useRecoilState(accountsState)
+  const navigate = useNavigate()
   return (
     <div>
       <div className="z-50 sticky top-0 bg-white p-4 border-b-[1px] border-b-gray-300 flex flex-col gap-4">
@@ -40,9 +42,22 @@ export default function Home() {
 
       <section className="p-4 flex flex-col items-center gap-4">
         <HomeCard title="Accounts" to="/accounts">
-          <Card.Section className={"p-4 flex flex-col gap-4"}>
-            {Object.values(acc).map(({name, img, accounts}) => (
-                <Row2 icon={
+          <Card.Section className={"p-4 flex flex-col gap-4"}
+          onClick={()=>{
+            navigate("/accounts")
+          }}>
+            {Object.values(acc).length === 0 ?
+                <div className={"flex flex-col gap-2"}>
+                  <div>You don't have any accounts yet!</div>
+                  <Button
+                  onClick={(e)=>{
+                    e.stopPropagation()
+                    navigate("/add")
+                  }}
+                  >Add an account</Button>
+                </div>
+                : Object.values(acc).map(({name, img, accounts}) => (
+                    <Row2 icon={
                   <img src={img} className={"w-10 h-10 rounded-full"}/>
                 } name={name} description={`${Object.values(accounts).length} accounts`} value={
                     `${Object.values(accounts).reduce(
