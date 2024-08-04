@@ -72,7 +72,7 @@ export function AccountDetails({bank}: { bank: Bank }) {
     const [, setAcc] = useRecoilState(accountsState);
     const navigate = useNavigate();
     return <>
-        <div className="z-50 sticky top-0 bg-white p-4 border-b-[1px] border-b-gray-300 flex flex-col gap-6">
+        <div className="z-50 sticky top-0 bg-white p-5 border-b-[1px] border-b-gray-300 flex flex-col gap-6">
             <div className="flex justify-between items-center w-full">
                 <Link to={"/accounts"}>
                     <ArrowLeftIcon/>
@@ -83,7 +83,7 @@ export function AccountDetails({bank}: { bank: Bank }) {
             </div>
         </div>
 
-        <div className={"flex flex-col gap-6 p-6"}>
+        <div className={"flex flex-col gap-5 p-5"}>
             <Card>
                 <CardHeader>
                     <div className={"flex justify-between items-center"}>
@@ -192,7 +192,7 @@ export function AccountDetails({bank}: { bank: Bank }) {
     </>
 }
 
-function Row({icon, title, value}: { icon: any, title: string, value: string }) {
+export function Row({icon, title, value}: { icon: any, title: string, value: string }) {
     return <div className={"flex gap-2 items-center"}>
         {icon}
         <p className={"text-gray-800 text-sm leading-4 "}>{title}</p>
@@ -209,7 +209,7 @@ export function AddAccount() {
 
     const navigate = useNavigate();
     return <>
-        <div className="z-50 sticky top-0 bg-white p-4 border-b-[1px] border-b-gray-300 flex flex-col gap-6">
+        <div className="z-50 sticky top-0 bg-white p-5 border-b-[1px] border-b-gray-300 flex flex-col gap-6">
             <div className="flex justify-between items-center w-full">
                 <Link to={"/accounts"}>
                     <ArrowLeftIcon/>
@@ -217,7 +217,7 @@ export function AddAccount() {
                 <h1 className="text-xl font-bold self-center">Link an account</h1>
             </div>
         </div>
-        <div className={"grid grid-cols-2 gap-6 p-6"}>
+        <div className={"grid grid-cols-2 gap-5 p-5"}>
 
             <TextInput placeholder={"Search your institution"} className={"col-span-2"}></TextInput>
             <Card className={"aspect-square flex justify-center items-center m-2"}
@@ -335,7 +335,7 @@ export default function Accounts() {
     const [acc,] : any = useRecoilState(accountsState);
     const navigate = useNavigate()
     return <>
-        <div className="z-50 sticky top-0 bg-white p-4 border-b-[1px] border-b-gray-300 flex flex-col gap-6">
+        <div className="z-50 sticky top-0 bg-white p-5 border-b-[1px] border-b-gray-300 flex flex-col gap-6">
             <div className="flex justify-between items-center w-full">
                 <h1 className="text-xl font-bold">Accounts</h1>
                 <Link to={"/accounts-add"}>
@@ -343,7 +343,7 @@ export default function Accounts() {
                 </Link>
             </div>
         </div>
-        <div className={"flex flex-col gap-6 p-6"}>
+        <div className={"flex flex-col gap-5 p-5"}>
             {Object.values(acc).length === 0 ?
                 <Card onClick={() => {
                     navigate("/accounts-add")
@@ -481,8 +481,11 @@ function AccountRow({a}: { a: Account }) {
     return <Row2 name={a.name} description={a.description} icon={a.icon} value={'$'+a.balance.toFixed(2)}/>
 }
 
-export function Row2({icon, name, description, value}: { icon: any, name: string, description: string, value: string }) {
-    return <div className={"flex justify-between items-center"}>
+export function Row2({icon, name, description, value,
+                     onClick}: { icon: any, name: string, description: string,
+    onClick?: any,
+    value: string }) {
+    return <div className={"flex justify-between items-center"} onClick={onClick}>
         <div className={"flex gap-4"}>
             <div className={"w-10 h-10 bg-gray-100 rounded-full flex justify-center items-center text-gray-900"}>
                 {icon}

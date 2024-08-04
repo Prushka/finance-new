@@ -1,6 +1,7 @@
 @import "@mantine/dates/styles.css";
 @import "@mantine/core/styles.css";
 @import "@mantine/dates/styles.css";
+@import '@mantine/charts/styles.css';
 
 @tailwind components;
 @tailwind utilities;
@@ -10,6 +11,7 @@
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --mantine-font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -100,5 +102,6 @@ body,
 }
 
 
-.f-drawer .mantine-Drawer-body {
+div[data-radix-popper-content-wrapper]{
+  z-index: 100000 !important;
 }

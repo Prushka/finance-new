@@ -236,7 +236,7 @@ export default function Budget() {
 
   return (
     <div>
-      <div className="z-50 sticky top-0 bg-white p-4 border-b-[1px] border-b-gray-300 flex flex-col gap-3">
+      <div className="z-50 sticky top-0 bg-white p-5 border-b-[1px] border-b-gray-300 flex flex-col gap-3">
         <div className="flex justify-between items-center gap-2">
           <h1 className="text-xl font-bold">Budget</h1>
           <Badge>🎉 5 months on budget!</Badge>
@@ -244,7 +244,7 @@ export default function Budget() {
         {monthPicker}
       </div>
 
-      <section className="p-4">
+      <section className="p-5">
         <div className="flex flex-row-reverse mb-4">{editButton}</div>
         <div className="flex flex-col gap-4">
           {totalMonthlyBudgetSection}

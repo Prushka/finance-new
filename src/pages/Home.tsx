@@ -33,14 +33,14 @@ export default function Home() {
   const navigate = useNavigate()
   return (
     <div>
-      <div className="z-50 sticky top-0 bg-white p-4 border-b-[1px] border-b-gray-300 flex flex-col gap-4">
+      <div className="z-50 sticky top-0 bg-white p-5 border-b-[1px] border-b-gray-300 flex flex-col gap-4">
         <div className="flex justify-between items-center">
           <h1 className="text-xl font-bold">Finance Fellas</h1>
           <Avatar radius="xl" />
         </div>
       </div>
 
-      <section className="p-4 flex flex-col items-center gap-4">
+      <section className="p-5 flex flex-col items-center gap-5">
         <HomeCard title="Accounts" to="/accounts">
           <Card.Section className={"p-4 flex flex-col gap-4"}
           onClick={()=>{
