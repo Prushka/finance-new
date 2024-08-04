@@ -99,6 +99,8 @@ export default function Transactions() {
       selectedTransactionIdx[1]
     ];
 
+  const [chipValue, setChipValue] = useState<string | null>(null);
+
   return (
     <div>
       <div className="z-50 sticky top-0 bg-white p-4 border-b-[1px] border-b-gray-300 flex flex-col gap-4">
@@ -115,11 +117,19 @@ export default function Transactions() {
         />
 
         <ScrollAreaAutosize>
-          <Chip.Group>
+          <Chip.Group value={chipValue}>
             <div className="flex gap-2">
               {["Pending", "Spending", "Deposits", "Withdrawls"].map(
                 (category) => (
-                  <Chip key={category} value={category} color="black">
+                  <Chip
+                    key={category}
+                    value={category}
+                    onClick={() => {
+                      if (chipValue === category) setChipValue(null);
+                      else setChipValue(category);
+                    }}
+                    color="black"
+                  >
                     {category}
                   </Chip>
                 )

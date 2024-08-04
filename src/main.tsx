@@ -1,15 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import {createHashRouter, RouterProvider} from "react-router-dom";
+import { createHashRouter, RouterProvider } from "react-router-dom";
 import Root from "@/Root.tsx";
 import { createTheme, MantineProvider } from "@mantine/core";
 import Home from "./pages/Home";
-import Accounts, {AddAccount, CO, TD} from "./pages/Accounts";
+import Accounts, { AddAccount, CO, TD } from "./pages/Accounts";
 import Planning from "./pages/Planning";
 import Budget from "./pages/Budget";
 import Transactions from "./pages/Transactions";
-import {RecoilRoot} from "recoil";
+import { RecoilRoot } from "recoil";
 
 const theme = createTheme({
   primaryColor: "indigo",
@@ -30,7 +30,7 @@ const router = createHashRouter([
       },
       {
         path: "accounts-add",
-        element: <AddAccount />
+        element: <AddAccount />,
       },
       {
         path: "planning",
@@ -46,12 +46,12 @@ const router = createHashRouter([
       },
       {
         path: "accounts/td",
-        element: <TD/>,
+        element: <TD />,
       },
       {
         path: "accounts/capital-one",
-        element: <CO/>
-      }
+        element: <CO />,
+      },
     ],
   },
 ]);
@@ -59,9 +59,9 @@ const router = createHashRouter([
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <RecoilRoot>
-    <MantineProvider theme={theme}>
-      <RouterProvider router={router} />
-    </MantineProvider>
+      <MantineProvider theme={theme}>
+        <RouterProvider router={router} />
+      </MantineProvider>
     </RecoilRoot>
   </React.StrictMode>
 );

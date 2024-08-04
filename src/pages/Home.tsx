@@ -1,10 +1,10 @@
 import { Avatar, Card, NumberFormatter, Progress } from "@mantine/core";
 import { ChevronRight } from "lucide-react";
-import {Link, useNavigate} from "react-router-dom";
-import {useRecoilState} from "recoil";
-import {accountsState} from "@/states.ts";
-import {Row2} from "@/pages/Accounts.tsx";
-import {Button} from "@/components/ui/button.tsx";
+import { useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { accountsState } from "@/states.ts";
+import { Row2 } from "@/pages/Accounts.tsx";
+import { Button } from "@/components/ui/button.tsx";
 
 const RECENT_TRANSACTIONS = [
   {
@@ -29,8 +29,8 @@ const RECENT_TRANSACTIONS = [
   },
 ];
 export default function Home() {
-  const [acc,] = useRecoilState(accountsState)
-  const navigate = useNavigate()
+  const [acc] = useRecoilState(accountsState);
+  const navigate = useNavigate();
   return (
     <div>
       <div className="z-50 sticky top-0 bg-white p-5 border-b-[1px] border-b-gray-300 flex flex-col gap-4">
@@ -42,30 +42,31 @@ export default function Home() {
 
       <section className="p-5 flex flex-col items-center gap-5">
         <HomeCard title="Accounts" to="/accounts">
-          <Card.Section className={"p-4 flex flex-col gap-4"}
-          onClick={()=>{
-            navigate("/accounts")
-          }}>
-            {Object.values(acc).length === 0 ?
-                <div className={"flex flex-col gap-2"}>
-                  <div>You don't have any accounts yet!</div>
-                  <Button
-                  onClick={(e)=>{
-                    e.stopPropagation()
-                    navigate("/accounts-add")
+          <Card.Section className={"p-4 flex flex-col gap-4"}>
+            {Object.values(acc).length === 0 ? (
+              <div className={"flex flex-col gap-2"}>
+                <div>You don't have any accounts yet!</div>
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate("/accounts-add");
                   }}
-                  >Add an account</Button>
-                </div>
-                : Object.values(acc).map(({name, img, accounts}) => (
-                    <Row2 icon={
-                  <img src={img} className={"w-10 h-10 rounded-full"}/>
-                } name={name} description={`${Object.values(accounts).length} accounts`} value={
-                    `$${Object.values(accounts).reduce(
-                        (acc, {balance}) => acc + balance, 0
-                    ).toFixed(2)}`
-                  }/>
-                ))
-            }
+                >
+                  Add an account
+                </Button>
+              </div>
+            ) : (
+              Object.values(acc).map(({ name, img, accounts }) => (
+                <Row2
+                  icon={<img src={img} className={"w-10 h-10 rounded-full"} />}
+                  name={name}
+                  description={`${Object.values(accounts).length} accounts`}
+                  value={`$${Object.values(accounts)
+                    .reduce((acc, { balance }) => acc + balance, 0)
+                    .toFixed(2)}`}
+                />
+              ))
+            )}
           </Card.Section>
         </HomeCard>
 
@@ -76,7 +77,7 @@ export default function Home() {
         </HomeCard>
 
         <HomeCard title="Budget" to="/budget">
-          <Card.Section inheritPadding withBorder py="sm">
+          <Card.Section inheritPadding pt="lg" pb="sm">
             <div className="flex mb-2 font-semibold justify-between items-center text-lg">
               <h2>August 2024 Budget</h2>
               <NumberFormatter
@@ -117,7 +118,12 @@ export default function Home() {
         </HomeCard>
 
         <HomeCard title="Recent transactions" to="/transactions">
-          <Card.Section inheritPadding py="sm" className="flex flex-col gap-2">
+          <Card.Section
+            inheritPadding
+            pt="lg"
+            pb="sm"
+            className="flex flex-col gap-2"
+          >
             {RECENT_TRANSACTIONS.map(({ name, account, amount }) => (
               <div key={name}>
                 <div className="flex justify-between items-center gap-2">
@@ -139,17 +145,22 @@ function HomeCard(props: {
   to: string;
   children?: React.ReactNode;
 }) {
+  const navigate = useNavigate();
+
   return (
-    <Card withBorder radius="md" className="w-full">
-      <Card.Section withBorder className="hover:bg-gray-100">
-        <Link
-          to={props.to}
-          className="flex justify-between items-center size-full px-4 py-3"
-        >
-          <h2 className="font-semibold">{props.title}</h2>
-          <ChevronRight />
-        </Link>
-      </Card.Section>
+    <Card
+      withBorder
+      shadow="xs"
+      radius="md"
+      className="w-full cursor-pointer p-5"
+      onClick={() => {
+        navigate(props.to);
+      }}
+    >
+      <div className="flex justify-between items-center">
+        <h2 className="font-semibold">{props.title}</h2>
+        <ChevronRight />
+      </div>
       {props.children}
     </Card>
   );

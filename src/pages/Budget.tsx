@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
   ActionIcon,
   Badge,
-  Button,
   Divider,
   NumberFormatter,
   NumberInput,
@@ -10,11 +9,12 @@ import {
 } from "@mantine/core";
 import { MonthPickerInput } from "@mantine/dates";
 import {
-  CheckIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   PencilIcon,
+  SaveIcon,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const currentDate = new Date();
 
@@ -90,23 +90,27 @@ export default function Budget() {
 
   const editButton = isCurrentMonth && (
     <Button
-      size="compact-sm"
-      leftSection={
-        !isEditing ? <PencilIcon className="size-4" /> : <CheckIcon />
-      }
-      variant={!isEditing ? "light" : "filled"}
       onClick={() => {
         setIsEditing((prev) => !prev);
       }}
     >
-      {!isEditing ? "Edit budget" : "Save budget"}
+      {!isEditing ? (
+        <>
+          <PencilIcon className="size-4 mr-2" /> Edit budget
+        </>
+      ) : (
+        <>
+          <SaveIcon className="size-4 mr-2" /> Save budget
+        </>
+      )}
     </Button>
   );
   const monthPicker = (
     <div>
       <div className="flex justify-between items-center gap-4">
         <ActionIcon
-          variant="light"
+          color="black"
+          variant="default"
           disabled={isEditing}
           onClick={goToPreviousMonth}
         >
@@ -126,7 +130,8 @@ export default function Budget() {
           }}
         />
         <ActionIcon
-          variant="light"
+          color="black"
+          variant="default"
           disabled={isCurrentMonth || isEditing}
           onClick={goToNextMonth}
         >
@@ -239,7 +244,16 @@ export default function Budget() {
       <div className="z-50 sticky top-0 bg-white p-5 border-b-[1px] border-b-gray-300 flex flex-col gap-3">
         <div className="flex justify-between items-center gap-2">
           <h1 className="text-xl font-bold">Budget</h1>
-          <Badge>🎉 5 months on budget!</Badge>
+          <Badge
+            variant="gradient"
+            gradient={{
+              from: "indigo",
+              to: "cyan",
+              deg: 96,
+            }}
+          >
+            🎉 5 months on budget!
+          </Badge>
         </div>
         {monthPicker}
       </div>

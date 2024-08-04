@@ -6,12 +6,16 @@ import {
   WalletCardsIcon,
 } from "lucide-react";
 import { Outlet, NavLink } from "react-router-dom";
-import React from "react";
-import {Toaster} from "sonner";
+import { Toaster } from "sonner";
 
 const NAV_BUTTONS = [
   { label: "Home", to: "/", icon: <HomeIcon />, includes: ["transactions"] },
-  { label: "Accounts", to: "/accounts", icon: <WalletCardsIcon />, includes: ["accounts-add"] },
+  {
+    label: "Accounts",
+    to: "/accounts",
+    icon: <WalletCardsIcon />,
+    includes: ["accounts-add"],
+  },
   { label: "Planning", to: "/planning", icon: <ChartLineIcon /> },
   { label: "Budget", to: "/budget", icon: <PiggyBankIcon /> },
 ];
@@ -34,7 +38,9 @@ export default function Root() {
               to={to}
               className={({ isActive }) => {
                 if (includes) {
-                  if (includes.some((path) => window.location.hash.includes(path))) {
+                  if (
+                    includes.some((path) => window.location.hash.includes(path))
+                  ) {
                     isActive = true;
                   }
                 }
