@@ -382,6 +382,7 @@ export function AddAccount() {
                   description: "You can now access all your TD accounts",
                   duration: 2500,
                   position: "top-center",
+                  closeButton: true,
                 });
               }, 400);
             }}
@@ -460,6 +461,7 @@ export function AddAccount() {
                     "You can now access all your Capital One accounts",
                   duration: 2500,
                   position: "top-center",
+                  closeButton: true,
                 });
               }, 400);
             }}

@@ -39,7 +39,7 @@ export default function Home() {
     <div>
       <div className="z-50 sticky top-0 bg-white p-5 border-b-[1px] border-b-gray-300 flex flex-col gap-5">
         <div className="flex justify-between items-center">
-          <div className={"flex gap-2 justify-center items-center"}>
+          <div className={"flex gap-3 justify-center items-center"}>
             <img src={"/finance.png"} className={"w-6 h-6 rounded-full"} />
             <h1 className="text-xl font-bold">Finance Fellas</h1>
           </div>
