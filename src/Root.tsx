@@ -6,9 +6,11 @@ import {
   WalletCardsIcon,
 } from "lucide-react";
 import { Outlet, NavLink } from "react-router-dom";
+import React from "react";
+import {Toaster} from "sonner";
 
 const NAV_BUTTONS = [
-  { label: "Home", to: "/", icon: <HomeIcon /> },
+  { label: "Home", to: "/", icon: <HomeIcon />, includes: ["transactions"] },
   { label: "Accounts", to: "/accounts", icon: <WalletCardsIcon />, includes: ["add"] },
   { label: "Planning", to: "/planning", icon: <ChartLineIcon /> },
   { label: "Budget", to: "/budget", icon: <PiggyBankIcon /> },
@@ -44,6 +46,8 @@ export default function Root() {
             </NavLink>
           ))}
         </nav>
+
+        <Toaster />
       </AppShell.Footer>
     </AppShell>
   );

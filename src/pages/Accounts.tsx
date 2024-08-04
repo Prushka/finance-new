@@ -1,14 +1,11 @@
-import {ActionIcon, Drawer, TextInput} from "@mantine/core";
+import {Drawer, Pill, TextInput} from "@mantine/core";
 import {
     ArrowLeftIcon,
-    CheckIcon,
-    ChevronLeftIcon,
     ChevronRightIcon,
     CoinsIcon, CreditCardIcon, File, HandCoinsIcon, HashIcon,
     LandmarkIcon,
-    PlusIcon, RefreshCcw, ShieldAlert, StepBackIcon
+    PlusIcon, RefreshCcw, ShieldAlert
 } from "lucide-react";
-import {MonthPickerInput} from "@mantine/dates";
 import {
     Card,
     CardContent,
@@ -32,10 +29,12 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
+import {toast} from "sonner";
+import {TRANSACTIONS_BY_DATE} from "@/pages/Transactions.tsx";
 
 export function TD() {
     return <>
-    <AccountDetails bank={accounts["TD"]}/>
+        <AccountDetails bank={accounts["TD"]}/>
     </>
 }
 
@@ -60,7 +59,7 @@ function DateSelect() {
 export function AccountDetails({bank}: { bank: Bank }) {
 
     const [open, setOpen] = useState(false);
-    const [acc, setAcc] = useRecoilState(accountsState);
+    const [, setAcc] = useRecoilState(accountsState);
     const navigate = useNavigate();
     return <>
         <div className="z-50 sticky top-0 bg-white p-4 border-b-[1px] border-b-gray-300 flex flex-col gap-6">
@@ -69,8 +68,6 @@ export function AccountDetails({bank}: { bank: Bank }) {
                     <ArrowLeftIcon/>
                 </Link>
                 <div className={"flex gap-2"}>
-
-                    <h1 className="text-xl font-bold self-center">{bank.name}</h1>
                     <img src={"/" + bank.img} className={"w-8 h-8 rounded-full"}/>
                 </div>
             </div>
@@ -85,14 +82,56 @@ export function AccountDetails({bank}: { bank: Bank }) {
 
                         <CardTitle>$829</CardTitle>
                     </div>
+                    <CardDescription>{bank.name}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <DemoChart />
+                    <DemoChart/>
                 </CardContent>
                 <CardFooter>
 
                     <DateSelect/>
                 </CardFooter>
+            </Card>
+
+            <Card onClick={()=>{
+                navigate("/transactions")
+            }}>
+                <CardHeader>
+                    <CardTitle>Transactions</CardTitle>
+                    <CardDescription>Recent transactions</CardDescription>
+                </CardHeader>
+
+                <CardContent className={"gap-4 flex flex-col"}>
+                    {TRANSACTIONS_BY_DATE[0].transactions.map(({
+                                                                   name,
+                                                                   account,
+                                                                   category,
+                                                                   icon,
+                                                                   amount,
+                                                                   pending
+                                                               }) =>
+                                    <button
+                                        key={name}
+                                        className="text-left flex justify-between items-center gap-2 bg-white w-full"
+                                        onClick={() => {
+                                        }}
+                                    >
+                                        <div
+                                            className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full">
+                                            {icon}
+                                        </div>
+                                        <div>
+                                            <p className="font-semibold">{name}</p>
+                                            <p className="text-xs">{account}</p>
+                                            <p className="text-xs text-gray-500">{category}</p>
+                                        </div>
+                                        <div className="flex-1 text-right self-start">
+                                            <p className="font-semibold">-${amount.toFixed(2)}</p>
+                                            {pending && <Pill>Pending</Pill>}
+                                        </div>
+                                    </button>
+                                )}
+                </CardContent>
             </Card>
 
             <Card>
@@ -104,7 +143,8 @@ export function AccountDetails({bank}: { bank: Bank }) {
 
                         <Row title={"Institution"} value={bank.name} icon={<LandmarkIcon size={18}/>}/>
                         <Row title={"Type"} value={"Bank Account"} icon={<File size={18}/>}/>
-                        <Row title={"Total Accounts"} value={`${Object.values(bank.accounts).length}`} icon={<HashIcon size={18}/>}/>
+                        <Row title={"Total Accounts"} value={`${Object.values(bank.accounts).length}`}
+                             icon={<HashIcon size={18}/>}/>
                         <Row title={"Last Updated"} value={"Just Now"} icon={<RefreshCcw size={18}/>}/>
                         <Dialog open={open} onOpenChange={setOpen}>
                             <DialogTrigger>
@@ -118,18 +158,18 @@ export function AccountDetails({bank}: { bank: Bank }) {
                                 </DialogHeader>
 
                                 <DialogFooter className={"flex gap-2"}>
-                                    <Button onClick={()=>{
+                                    <Button onClick={() => {
                                         setOpen(false)
                                     }}>Cancel</Button>
                                     <Button variant={"destructive"}
-                                    onClick={()=>{
-                                        setAcc((prev)=> {
-                                            const n = {...prev}
-                                            delete n[bank.name]
-                                            return n
-                                        })
-                                        navigate("/accounts")
-                                    }}
+                                            onClick={() => {
+                                                setAcc((prev: any) => {
+                                                    const n = {...prev}
+                                                    delete n[bank.name]
+                                                    return n
+                                                })
+                                                navigate("/accounts")
+                                            }}
                                     >Unlink</Button>
                                 </DialogFooter>
                             </DialogContent>
@@ -151,7 +191,7 @@ function Row({icon, title, value}: { icon: any, title: string, value: string }) 
 }
 
 export function AddAccount() {
-    const [acc, setAcc] = useRecoilState(accountsState);
+    const [acc, setAcc]: any = useRecoilState(accountsState);
 
     const [tOpened, {open: tOpen, close: tClose}] = useDisclosure(false);
     const [cOpened, {open: cOpen, close: cClose}] = useDisclosure(false);
@@ -171,11 +211,11 @@ export function AddAccount() {
 
             <TextInput placeholder={"Search your institution"} className={"col-span-2"}></TextInput>
             <Card className={"aspect-square flex justify-center items-center m-2"}
-            onClick={tOpen}>
-                <img src={"td.png"} className={"object-cover "} />
+                  onClick={tOpen}>
+                <img src={"td.png"} className={"object-cover "}/>
             </Card>
             <Card className={"aspect-square flex justify-center items-center m-2"}
-            onClick={cOpen}>
+                  onClick={cOpen}>
                 <img src={"co.webp"} className={"object-cover "}/>
             </Card>
         </div>
@@ -210,20 +250,25 @@ export function AddAccount() {
                 <div className={"flex gap-3 items-center mt-auto text-gray-500 text-sm"}>
                     <p>Read our <span className={"underline"}>terms of services</span>!</p>
                 </div>
-                <Button className={"w-full"} onClick={()=>{
+                <Button className={"w-full"} onClick={() => {
                     cClose()
                     setAcc({
                         ...acc,
                         "TD": accounts["TD"]
                     })
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         navigate("/accounts")
+                        toast.success('TD linked!', {
+                            description: "You can now access all your TD accounts",
+                            duration: 2500,
+                            position: "top-center"
+                        })
                     }, 400)
                 }}>CONTINUE</Button>
             </div>
         </Drawer>
         <Drawer position="bottom" size={"xl"} opened={cOpened} onClose={cClose} title={"Capital One"}
-        className={"f-drawer"}>
+                className={"f-drawer"}>
             <div className={"flex flex-col gap-6 items-center h-full grow"}>
                 <img src={"co.webp"} className={"object-cover w-24 h-24 rounded-full"}/>
                 <p className={"text-md"}>We will redirect you to Capital One...</p>
@@ -253,14 +298,20 @@ export function AddAccount() {
                 <div className={"flex gap-3 items-center mt-auto text-gray-500 text-sm"}>
                     <p>Read our <span className={"underline"}>terms of services</span>!</p>
                 </div>
-                <Button className={"w-full"} onClick={()=>{
+                <Button className={"w-full"} onClick={() => {
                     cClose()
                     setAcc({
                         ...acc,
                         "Capital One": accounts["Capital One"]
                     })
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         navigate("/accounts")
+
+                        toast.success('Capital One linked!', {
+                            description: "You can now access all your Capital One accounts",
+                            duration: 2500,
+                            position: "top-center"
+                        })
                     }, 400)
                 }}>CONTINUE</Button>
             </div>
@@ -270,7 +321,7 @@ export function AddAccount() {
 
 export default function Accounts() {
 
-    const [acc, setAcc] = useRecoilState(accountsState);
+    const [acc,] : any = useRecoilState(accountsState);
     const navigate = useNavigate()
     return <>
         <div className="z-50 sticky top-0 bg-white p-4 border-b-[1px] border-b-gray-300 flex flex-col gap-6">
@@ -283,7 +334,7 @@ export default function Accounts() {
         </div>
         <div className={"flex flex-col gap-6 p-6"}>
             {Object.values(acc).length === 0 ?
-                <Card onClick={()=>{
+                <Card onClick={() => {
                     navigate("/add")
                 }}>
                     <CardHeader>
@@ -294,7 +345,7 @@ export default function Accounts() {
                         <Button className={"w-full"}>Add an account</Button>
                     </CardContent>
                 </Card> :
-                Object.values(acc).map((a) => <BankCard key={a.name} bank={a}/>)
+                Object.values(acc).map((a: any) => <BankCard key={a.name} bank={a}/>)
             }
         </div>
     </>;
@@ -390,7 +441,7 @@ interface Account {
 
 function BankCard({bank}: { bank: Bank }) {
     const navigate = useNavigate()
-    return <Card onClick={()=>{
+    return <Card onClick={() => {
         navigate(bank.to)
     }}>
         <CardHeader>

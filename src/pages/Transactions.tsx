@@ -16,7 +16,7 @@ import {
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-const TRANSACTIONS_BY_DATE = [
+export const TRANSACTIONS_BY_DATE = [
   {
     when: "Yesterday",
     transactions: [
