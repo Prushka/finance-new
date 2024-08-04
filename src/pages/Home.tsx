@@ -81,7 +81,7 @@ export default function Home() {
             className="flex items-center gap-2"
           >
             <span className="text-3xl font-bold">5</span>{" "}
-            <span>months of staying on budget!</span>
+            <span>months on budget!</span>
             🎉
           </Card.Section>
         </HomeCard>

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import {
   ActionIcon,
+  Badge,
   Button,
-  Card,
   Divider,
   NumberFormatter,
   NumberInput,
@@ -88,6 +88,20 @@ export default function Budget() {
 
   const monthlySpentPercentage = (monthlySpent / monthlyTotal) * 100;
 
+  const editButton = isCurrentMonth && (
+    <Button
+      size="compact-sm"
+      leftSection={
+        !isEditing ? <PencilIcon className="size-4" /> : <CheckIcon />
+      }
+      variant={!isEditing ? "light" : "filled"}
+      onClick={() => {
+        setIsEditing((prev) => !prev);
+      }}
+    >
+      {!isEditing ? "Edit budget" : "Save budget"}
+    </Button>
+  );
   const monthPicker = (
     <div>
       <div className="flex justify-between items-center gap-4">
@@ -118,24 +132,6 @@ export default function Budget() {
         >
           <ChevronRightIcon />
         </ActionIcon>
-      </div>
-      <div className="mt-2 flex justify-center h-6">
-        {isCurrentMonth ? (
-          <Button
-            size="compact-sm"
-            leftSection={
-              !isEditing ? <PencilIcon className="size-4" /> : <CheckIcon />
-            }
-            variant={!isEditing ? "light" : "filled"}
-            onClick={() => {
-              setIsEditing((prev) => !prev);
-            }}
-          >
-            {!isEditing ? "Edit budget" : "Save budget"}
-          </Button>
-        ) : (
-          <p className="text-sm text-gray-500">Viewing past month</p>
-        )}
       </div>
     </div>
   );
@@ -240,28 +236,21 @@ export default function Budget() {
 
   return (
     <div>
-      <div className="z-50 sticky top-0 bg-white p-4 border-b-[1px] border-b-gray-300">
-        <h1 className="text-xl font-bold">Budget</h1>
+      <div className="z-50 sticky top-0 bg-white p-4 border-b-[1px] border-b-gray-300 flex flex-col gap-3">
+        <div className="flex justify-between items-center gap-2">
+          <h1 className="text-xl font-bold">Budget</h1>
+          <Badge>🎉 5 months on budget!</Badge>
+        </div>
+        {monthPicker}
       </div>
 
       <section className="p-4">
-        <Card withBorder radius="md" className="flex flex-col gap-4">
-          {monthPicker}
+        <div className="flex flex-row-reverse mb-4">{editButton}</div>
+        <div className="flex flex-col gap-4">
           {totalMonthlyBudgetSection}
           <Divider label="Budget Categories" />
           {budgetCategoriesSection}
-        </Card>
-
-        <Card
-          withBorder
-          radius="md"
-          className="flex flex-col justify-center items-center size-[200px] mx-auto text-center mt-8"
-        >
-          <h2 className="text-lg font-semibold mb-4">🎉 Streak 🎉</h2>
-
-          <p className="text-5xl font-bold mb-2">5</p>
-          <p>months of staying on budget!</p>
-        </Card>
+        </div>
       </section>
     </div>
   );
