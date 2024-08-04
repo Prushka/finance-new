@@ -1,6 +1,9 @@
 import { Avatar, Card, NumberFormatter, Progress } from "@mantine/core";
 import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import {useRecoilState} from "recoil";
+import {accountsState} from "@/states.ts";
+import {Row2} from "@/pages/Accounts.tsx";
 
 const RECENT_TRANSACTIONS = [
   {
@@ -25,6 +28,7 @@ const RECENT_TRANSACTIONS = [
   },
 ];
 export default function Home() {
+  const [acc,] = useRecoilState(accountsState)
   return (
     <div>
       <div className="z-50 sticky top-0 bg-white p-4 border-b-[1px] border-b-gray-300 flex flex-col gap-4">
@@ -36,7 +40,18 @@ export default function Home() {
 
       <section className="p-4 flex flex-col items-center gap-4">
         <HomeCard title="Accounts" to="/accounts">
-          <Card.Section inheritPadding>TODO DAN: List of accounts</Card.Section>
+          <Card.Section className={"p-4 flex flex-col gap-4"}>
+            {Object.values(acc).map(({name, img, accounts}) => (
+                <Row2 icon={
+                  <img src={img} className={"w-10 h-10 rounded-full"}/>
+                } name={name} description={`${Object.values(accounts).length} accounts`} value={
+                    `${Object.values(accounts).reduce(
+                        (acc, {balance}) => acc + balance, 0
+                    ).toFixed(2)}`
+                  }/>
+                ))
+            }
+          </Card.Section>
         </HomeCard>
 
         <HomeCard title="Planning" to="/planning">

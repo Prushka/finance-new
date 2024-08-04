@@ -261,7 +261,8 @@ export function AddAccount() {
                         toast.success('TD linked!', {
                             description: "You can now access all your TD accounts",
                             duration: 2500,
-                            position: "top-center"
+                            position: "top-center",
+
                         })
                     }, 400)
                 }}>CONTINUE</Button>
@@ -418,7 +419,7 @@ const accounts = {
     },
 }
 
-interface Bank {
+export interface Bank {
     color: {
         bg: string;
         text: string;
@@ -431,7 +432,7 @@ interface Bank {
     };
 }
 
-interface Account {
+export interface Account {
     name: string;
     balance: number;
     account: number;
@@ -467,20 +468,22 @@ function BankCard({bank}: { bank: Bank }) {
 }
 
 function AccountRow({a}: { a: Account }) {
+    return <Row2 name={a.name} description={a.description} icon={a.icon} value={a.balance.toFixed(2)}/>
+}
+
+export function Row2({icon, name, description, value}: { icon: any, name: string, description: string, value: string }) {
     return <div className={"flex justify-between items-center"}>
         <div className={"flex gap-4"}>
             <div className={"w-10 h-10 bg-gray-100 rounded-full flex justify-center items-center text-gray-900"}>
-                {a.icon}
+                {icon}
             </div>
             <div className={"flex flex-col h-full justify-center gap-1"}>
-                <p className={"leading-4"}>{a.name}</p>
-                <p className={"text-gray-500 text-xs leading-4"}>{a.description}</p>
+                <p className={"leading-4"}>{name}</p>
+                <p className={"text-gray-500 text-xs leading-4"}>{description}</p>
             </div>
         </div>
         <div className={"flex gap-2 self-start"}>
-            <p className={"text-lg"}>${a.balance}</p>
+            <p className={"text-lg"}>${value}</p>
         </div>
-
-
     </div>
 }
