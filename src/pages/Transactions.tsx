@@ -109,15 +109,15 @@ export default function Transactions() {
           </Chip.Group>
         </ScrollAreaAutosize>
       </div>
-      <section className="p-4 flex flex-col gap-4">
+      <section className=" flex flex-col gap-4">
         {transactionsDataByDate.map(({ when, transactions }) => (
-          <div key={when} className="flex flex-col gap-3 mb-4">
-            <h2 className="text-sm text-gray-500">{when}</h2>
+          <div key={when} className="flex flex-col mt-4">
+            <h2 className="text-sm text-gray-500 px-4 mb-4">{when}</h2>
             {transactions.map(
               ({ name, account, category, icon, amount, pending }) => (
-                <div
+                <button
                   key={name}
-                  className="flex justify-between items-center gap-2"
+                  className="text-left flex justify-between items-center gap-2 bg-white hover:bg-gray-200 p-4"
                 >
                   <div className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full">
                     {icon}
@@ -131,7 +131,7 @@ export default function Transactions() {
                     <p className="font-semibold">-${amount.toFixed(2)}</p>
                     {pending && <Pill>Pending</Pill>}
                   </div>
-                </div>
+                </button>
               )
             )}
           </div>

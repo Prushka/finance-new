@@ -2,6 +2,28 @@ import { Avatar, Card, NumberFormatter, Progress } from "@mantine/core";
 import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
+const RECENT_TRANSACTIONS = [
+  {
+    name: "Sushi",
+    account: "TD *8563",
+    amount: 321.12,
+  },
+  {
+    name: "University of Toronto Bookstore",
+    account: "RBC *7342",
+    amount: 45.67,
+  },
+  {
+    name: "Starbucks",
+    account: "TD *8563",
+    amount: 12.5,
+  },
+  {
+    name: "Apple Store",
+    account: "RBC *7342",
+    amount: 1599.99,
+  },
+];
 export default function Home() {
   return (
     <div>
@@ -65,8 +87,16 @@ export default function Home() {
         </HomeCard>
 
         <HomeCard title="Recent transactions" to="/transactions">
-          <Card.Section inheritPadding>
-            List of recent transactions
+          <Card.Section inheritPadding py="sm" className="flex flex-col gap-2">
+            {RECENT_TRANSACTIONS.map(({ name, account, amount }) => (
+              <div key={name}>
+                <div className="flex justify-between items-center gap-2">
+                  <p className="font-semibold">{name}</p>
+                  <p className="font-semibold">-${amount.toFixed(2)}</p>
+                </div>
+                <p className="text-xs text-gray-500">{account}</p>
+              </div>
+            ))}
           </Card.Section>
         </HomeCard>
       </section>
