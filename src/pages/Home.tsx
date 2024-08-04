@@ -2,9 +2,11 @@ import { Avatar, Card, NumberFormatter, Progress } from "@mantine/core";
 import { ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { accountsState } from "@/states.ts";
+import {accountsState, scheduleState} from "@/states.ts";
 import { Row2 } from "@/pages/Accounts.tsx";
 import { Button } from "@/components/ui/button.tsx";
+import React from "react";
+import {Schedule, ScheduleRow} from "@/pages/Planning.tsx";
 
 const RECENT_TRANSACTIONS = [
   {
@@ -31,18 +33,23 @@ const RECENT_TRANSACTIONS = [
 export default function Home() {
   const [acc] = useRecoilState(accountsState);
   const navigate = useNavigate();
+  const [schedules] = useRecoilState(scheduleState);
+
   return (
     <div>
-      <div className="z-50 sticky top-0 bg-white p-5 border-b-[1px] border-b-gray-300 flex flex-col gap-4">
+      <div className="z-50 sticky top-0 bg-white p-5 border-b-[1px] border-b-gray-300 flex flex-col gap-5">
         <div className="flex justify-between items-center">
-          <h1 className="text-xl font-bold">Finance Fellas</h1>
-          <Avatar radius="xl" />
+          <div className={"flex gap-2 justify-center items-center"}>
+            <img src={"/finance.png"} className={"w-6 h-6 rounded-full"} />
+            <h1 className="text-xl font-bold">Finance Fellas</h1>
+          </div>
+          <Avatar radius="xl"/>
         </div>
       </div>
 
       <section className="p-5 flex flex-col items-center gap-5">
         <HomeCard title="Accounts" to="/accounts">
-          <Card.Section className={"p-4 flex flex-col gap-4"}>
+          <Card.Section className={"p-5 flex flex-col gap-5"}>
             {Object.values(acc).length === 0 ? (
               <div className={"flex flex-col gap-2"}>
                 <div>You don't have any accounts yet!</div>
@@ -57,7 +64,7 @@ export default function Home() {
               </div>
             ) : (
               Object.values(acc).map(({ name, img, accounts }) => (
-                <Row2
+                <Row2 key={`${name}${img}`}
                   icon={<img src={img} className={"w-10 h-10 rounded-full"} />}
                   name={name}
                   description={`${Object.values(accounts).length} accounts`}
@@ -71,8 +78,20 @@ export default function Home() {
         </HomeCard>
 
         <HomeCard title="Planning" to="/planning">
-          <Card.Section inheritPadding>
-            TODO DAN: Chart + upcoming income + expenses
+          <Card.Section className={"flex p-5 gap-5 flex-col"}>
+            {schedules
+                .slice()
+                .sort(
+                    (a: Schedule, b: Schedule) =>
+                        new Date(a.date).getTime() - new Date(b.date).getTime()
+                ).slice(0, 2)
+                .map((a, index) => (
+                    <ScheduleRow
+                        key={index}
+                        schedule={a}
+                        prefix={a.si === "expense" ? "-" : ""}
+                    />
+                ))}
           </Card.Section>
         </HomeCard>
 
@@ -93,7 +112,7 @@ export default function Home() {
                 radius="xl"
                 value={(643.32 / 2800) * 100}
                 className="w-full"
-                color="indigo"
+                color="#6A43DD"
               />
               <p className="text-sm text-gray-500 text-right w-[125px]">
                 <NumberFormatter
@@ -122,7 +141,7 @@ export default function Home() {
             inheritPadding
             pt="lg"
             pb="sm"
-            className="flex flex-col gap-2"
+            className="flex flex-col gap-3"
           >
             {RECENT_TRANSACTIONS.map(({ name, account, amount }) => (
               <div key={name}>
@@ -152,7 +171,7 @@ function HomeCard(props: {
       withBorder
       shadow="xs"
       radius="md"
-      className="w-full cursor-pointer p-5"
+      className="w-full hoverable-card p-5"
       onClick={() => {
         navigate(props.to);
       }}

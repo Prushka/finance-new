@@ -174,7 +174,7 @@ export default function Budget() {
           radius="xl"
           value={monthlySpentPercentage}
           className="w-full"
-          color="indigo"
+          color="#6A43DD"
         />
         <p className="text-sm text-gray-500 text-right w-[125px]">
           <NumberFormatter
@@ -190,7 +190,7 @@ export default function Budget() {
   );
 
   const budgetCategoriesSection = (
-    <section className="flex flex-col gap-4">
+    <section className="flex flex-col gap-5">
       {budgetCategories.map(({ name, total, spent }) => {
         const remaining = total - spent;
         const spentPercentage = (spent / total) * 100;
@@ -221,7 +221,8 @@ export default function Budget() {
               <Progress
                 value={spentPercentage}
                 className="w-full"
-                color="indigo"
+                color="#6A43DD"
+
               />
               <p className="text-sm text-gray-500 text-right w-[125px]">
                 <NumberFormatter
@@ -241,14 +242,15 @@ export default function Budget() {
 
   return (
     <div>
-      <div className="z-50 sticky top-0 bg-white p-5 border-b-[1px] border-b-gray-300 flex flex-col gap-3">
+      <div className="z-50 sticky top-0 bg-white p-5 border-b-[1px] border-b-gray-300 flex flex-col gap-4">
         <div className="flex justify-between items-center gap-2">
           <h1 className="text-xl font-bold">Budget</h1>
           <Badge
             variant="gradient"
+            className={"font-bold text-xs"}
             gradient={{
-              from: "indigo",
-              to: "cyan",
+              from: "#a052ab",
+              to: "#696eff",
               deg: 96,
             }}
           >

@@ -16,6 +16,8 @@ import {
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+const size = 18;
+
 export const TRANSACTIONS_BY_DATE = [
   {
     when: "Yesterday",
@@ -23,7 +25,7 @@ export const TRANSACTIONS_BY_DATE = [
       {
         name: "Sushi",
         category: "Restaurant",
-        icon: <Utensils />,
+        icon: <Utensils size={size} />,
         account: "TD *8563",
         amount: 321.12,
         pending: true,
@@ -32,7 +34,7 @@ export const TRANSACTIONS_BY_DATE = [
       {
         name: "University of Toronto Bookstore",
         category: "Retail",
-        icon: <ShoppingBag />,
+        icon: <ShoppingBag size={size} />,
         account: "RBC *7342",
         amount: 45.67,
         pending: true,
@@ -46,7 +48,7 @@ export const TRANSACTIONS_BY_DATE = [
       {
         name: "Starbucks",
         category: "Restaurant",
-        icon: <Utensils />,
+        icon: <Utensils size={size} />,
         account: "TD *8563",
         amount: 12.5,
         pending: false,
@@ -55,7 +57,7 @@ export const TRANSACTIONS_BY_DATE = [
       {
         name: "Apple Store",
         category: "Retail",
-        icon: <ShoppingBag />,
+        icon: <ShoppingBag size={size} />,
         account: "RBC *7342",
         amount: 1599.99,
         pending: false,
@@ -69,7 +71,7 @@ export const TRANSACTIONS_BY_DATE = [
       {
         name: "Amazon",
         category: "Retail",
-        icon: <ShoppingBag />,
+        icon: <ShoppingBag size={size} />,
         account: "TD *8563",
         amount: 89.99,
         pending: false,
@@ -78,7 +80,7 @@ export const TRANSACTIONS_BY_DATE = [
       {
         name: "Gas Station",
         category: "Transportation",
-        icon: <CarIcon />,
+        icon: <CarIcon size={size} />,
         account: "RBC *7342",
         amount: 50.0,
         pending: false,
@@ -158,7 +160,7 @@ export default function Transactions() {
                     setModalOpen(true);
                   }}
                 >
-                  <div className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full">
+                  <div className="mr-2 flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full">
                     {icon}
                   </div>
                   <div>

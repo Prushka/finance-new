@@ -124,19 +124,22 @@ export function AccountDetails({ bank }: { bank: Bank }) {
           <Link to={"/accounts"}>
             <ArrowLeftIcon />
           </Link>
-          <div className={"flex gap-2"}>
+          <h1 className="text-xl font-bold self-center">{bank.name}</h1>
             <img src={"./" + bank.img} className={"w-8 h-8 rounded-full"} />
-          </div>
         </div>
       </div>
 
-      <div className={"flex flex-col gap-5 p-5"}>
+      <div className={"flex flex-col gap-5 p-5 mb-2"}>
         <Card>
           <CardHeader>
             <div className={"flex justify-between items-center"}>
               <CardTitle>Net Worth</CardTitle>
 
-              <CardTitle>$829</CardTitle>
+              <CardTitle>
+                ${Object.values(bank.accounts)
+                  .reduce((acc, { balance }) => acc + balance, 0)
+                  .toFixed(2)}
+              </CardTitle>
             </div>
             <CardDescription>{bank.name}</CardDescription>
           </CardHeader>
@@ -152,6 +155,7 @@ export function AccountDetails({ bank }: { bank: Bank }) {
           onClick={() => {
             navigate("/transactions");
           }}
+          className={"hoverable-card"}
         >
           <CardHeader>
             <CardTitle>Transactions</CardTitle>
@@ -298,13 +302,13 @@ export function AddAccount() {
           className={"col-span-2"}
         ></TextInput>
         <Card
-          className={"aspect-square flex justify-center items-center m-2"}
+          className={"aspect-square flex justify-center items-center m-2 hoverable-card"}
           onClick={tOpen}
         >
           <img src={"td.png"} className={"object-cover "} />
         </Card>
         <Card
-          className={"aspect-square flex justify-center items-center m-2"}
+          className={"aspect-square flex justify-center items-center m-2 hoverable-card"}
           onClick={cOpen}
         >
           <img src={"co.webp"} className={"object-cover "} />
@@ -477,13 +481,16 @@ export default function Accounts() {
         <div className="flex justify-between items-center w-full">
           <h1 className="text-xl font-bold">Accounts</h1>
           <Link to={"/accounts-add"}>
-            <PlusIcon />
+            <Button variant={"secondary"} className={"flex gap-2"}>
+              <PlusIcon /> Add
+            </Button>
           </Link>
         </div>
       </div>
       <div className={"flex flex-col gap-5 p-5"}>
         {Object.values(acc).length === 0 ? (
           <Card
+              className={"hoverable-card"}
             onClick={() => {
               navigate("/accounts-add");
             }}
@@ -601,6 +608,7 @@ function BankCard({ bank }: { bank: Bank }) {
       onClick={() => {
         navigate(bank.to);
       }}
+      className={"hoverable-card"}
     >
       <CardHeader>
         <div className={"flex justify-between items-center"}>
@@ -611,10 +619,10 @@ function BankCard({ bank }: { bank: Bank }) {
               <LandmarkIcon size={24} className={bank.color.text} />
             </div>
             <div className={"flex flex-col h-full justify-center gap-1"}>
-              <p className={"text-lg leading-4"}>{bank.name}</p>
-              <p className={"text-gray-500 text-sm leading-4"}>
+              <CardTitle>{bank.name}</CardTitle>
+              <CardDescription>
                 {Object.values(bank.accounts).length} accounts
-              </p>
+              </CardDescription>
             </div>
           </div>
           <ChevronRightIcon />
@@ -647,16 +655,17 @@ export function Row2({
   name,
   description,
   value,
-  onClick,
+  onClick, className
 }: {
   icon: any;
   name: string;
   description: string;
   onClick?: any;
   value: string;
+    className?: string;
 }) {
   return (
-    <div className={"flex justify-between items-center"} onClick={onClick}>
+    <div className={`flex justify-between items-center ${className}`} onClick={onClick}>
       <div className={"flex gap-4"}>
         <div
           className={

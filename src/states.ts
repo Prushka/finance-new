@@ -50,7 +50,7 @@ export const scheduleState: RecoilState<any[]> =
                 {
                     type: "Salary",
                     amount: 3000,
-                    date: "2024-08-05",
+                    date: "2024-08-07",
                     si: "income",
                     key: "4",
                     repeats: "Month"

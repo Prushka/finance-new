@@ -105,3 +105,8 @@ body,
 div[data-radix-popper-content-wrapper]{
   z-index: 100000 !important;
 }
+
+
+.hoverable-card {
+  @apply hover:shadow-md cursor-pointer transition-all;
+}

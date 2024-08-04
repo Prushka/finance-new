@@ -1,69 +1,49 @@
-"use client"
+import {LineChart} from "@mantine/charts";
 
-import { TrendingUp } from "lucide-react"
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
-
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import {
-    ChartConfig,
-    ChartContainer,
-    ChartTooltip,
-    ChartTooltipContent,
-} from "@/components/ui/chart"
-const chartData = [
-    { month: "January", balance: 186 },
-    { month: "February", balance: 305 },
-    { month: "March", balance: 237 },
-    { month: "April", balance: 73 },
-    { month: "May", balance: 209 },
-    { month: "June", balance: 214 },
-]
-
-const chartConfig = {
-    balance: {
-        label: "Balance",
-        color: "hsl(var(--chart-1))",
-    },
-} satisfies ChartConfig
 
 export function DemoChart() {
     return (
-        <ChartContainer config={chartConfig}>
-            <AreaChart
-                accessibilityLayer
-                data={chartData}
-                margin={{
-                    left: 12,
-                    right: 12,
-                }}
-            >
-                <CartesianGrid vertical={false} />
-                <XAxis
-                    dataKey="month"
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={8}
-                    tickFormatter={(value) => value.slice(0, 3)}
-                />
-                <ChartTooltip
-                    cursor={false}
-                    content={<ChartTooltipContent indicator="line" />}
-                />
-                <Area
-                    dataKey="balance"
-                    type="natural"
-                    fill="var(--color-balance)"
-                    fillOpacity={0.4}
-                    stroke="var(--color-balance)"
-                />
-            </AreaChart>
-        </ChartContainer>
+        <LineChart
+            h={300}
+            data={[
+                {
+                    date: 'July 31',
+                    Chequing: 2890,
+                    Savings: 2338,
+                    Credit: 2452,
+                },
+                {
+                    date: 'Aug 1',
+                    Chequing: 2890,
+                    Savings: 2338,
+                    Credit: 2452,
+                },
+                {
+                    date: 'Aug 2',
+                    Chequing: 2756,
+                    Savings: 2103,
+                    Credit: 2402,
+                },
+                {
+                    date: 'Aug 3',
+                    Chequing: 3322,
+                    Savings: 986,
+                    Credit: 1821,
+                },
+                {
+                    date: 'Aug 4',
+                    Chequing: 3470,
+                    Savings: 2108,
+                    Credit: 2809,
+                },
+            ]}
+            dataKey="date"
+            withLegend
+            series={[
+                { name: 'Chequing', color: 'indigo.6' },
+                { name: 'Savings', color: 'blue.6' },
+                { name: 'Credit', color: 'red.6', label: 'Credit Card' },
+            ]}
+        />
     )
 }
