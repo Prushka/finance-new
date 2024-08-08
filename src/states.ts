@@ -24,7 +24,7 @@ export const scheduleState: RecoilState<any[]> =
                 {
                     type: "Rent",
                     amount: 2200,
-                    date: "2024-08-10",
+                    date: "2024-08-24",
                     si: "expense",
                     key: "1",
                     repeats: "Month"
@@ -32,7 +32,7 @@ export const scheduleState: RecoilState<any[]> =
                 {
                     type: "Groceries",
                     amount: 200,
-                    date: "2024-08-08",
+                    date: "2024-08-19",
                     si: "expense",
                     key: "2",
                     repeats: "Never"
@@ -50,7 +50,7 @@ export const scheduleState: RecoilState<any[]> =
                 {
                     type: "Salary",
                     amount: 3000,
-                    date: "2024-08-07",
+                    date: "2024-08-27",
                     si: "income",
                     key: "4",
                     repeats: "Month"
