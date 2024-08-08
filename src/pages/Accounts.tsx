@@ -151,7 +151,7 @@ export function AccountDetails({ bank }: { bank: Bank }) {
             <CardDescription>{bank.name}</CardDescription>
           </CardHeader>
           <CardContent>
-            <DemoChart />
+            <DemoChart td={bank.name==="TD"} />
           </CardContent>
           <CardFooter>
             <TabGroup options={options} />
@@ -312,7 +312,7 @@ export function ConvinceUser({
                 <div className={"flex gap-3 items-center"}>
                     <div
                         className={
-                            "w-10 h-10 bg-gray-100 rounded-full flex justify-center items-center text-gray-900"
+                            "w-10 h-10 shrink-0 bg-gray-100 rounded-full flex justify-center items-center text-gray-900"
                         }
                     >
                         <ShieldAlert size={18}/>
@@ -327,7 +327,7 @@ export function ConvinceUser({
                 <div className={"flex gap-3 items-center"}>
                     <div
                         className={
-                            "w-10 h-10 bg-gray-100 rounded-full flex justify-center items-center text-gray-900"
+                            "w-10 h-10 shrink-0 bg-gray-100 rounded-full flex justify-center items-center text-gray-900"
                         }
                     >
                         <GlobeLock size={18}/>
@@ -368,7 +368,7 @@ export function ConvinceUser({
                     setTimeout(() => {
                         navigate("/accounts");
                         toast.success(title+" linked!", {
-                            description: "You can now access all your TD accounts",
+                            description: "You can now access all your "+title+" accounts",
                             duration: 2500,
                             position: "top-center",
                             closeButton: true,
@@ -508,7 +508,7 @@ const accounts = {
         icon: <CoinsIcon size={18} />,
       },
       Savings: {
-        balance: 10000,
+        balance: 281,
         account: 83471,
         description: "Everyday Savings",
         name: "Savings",

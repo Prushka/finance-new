@@ -1,11 +1,11 @@
 import {LineChart} from "@mantine/charts";
 
 
-export function DemoChart() {
+export function DemoChart({td}:{td:boolean}) {
     return (
         <LineChart
             h={300}
-            data={[
+            data={td?[
                 {
                     date: 'July 31',
                     Chequing: 2890,
@@ -35,6 +35,32 @@ export function DemoChart() {
                     Chequing: 3470,
                     Savings: 2108,
                     Credit: 2809,
+                },
+            ]:[
+                {
+                    date: 'July 31',
+                    Chequing: 3720,
+                    Savings: 2338,
+                },
+                {
+                    date: 'Aug 1',
+                    Chequing: 4320,
+                    Savings: 120,
+                },
+                {
+                    date: 'Aug 2',
+                    Chequing: 1100,
+                    Savings: 218,
+                },
+                {
+                    date: 'Aug 3',
+                    Chequing: 1100,
+                    Savings: 218,
+                },
+                {
+                    date: 'Aug 4',
+                    Chequing: 1000,
+                    Savings: 281,
                 },
             ]}
             dataKey="date"
