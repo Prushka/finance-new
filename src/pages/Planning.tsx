@@ -241,7 +241,7 @@ function ScheduleDrawer({
           <Select
             label="Associated Account"
             placeholder=""
-            data={["TD", "Capital One"]}
+            data={["TD", "RBC"]}
             value={account}
             onChange={setAccount}
           />

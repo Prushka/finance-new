@@ -50,7 +50,7 @@ export function TD() {
 export function CO() {
   return (
     <>
-      <AccountDetails bank={accounts["Capital One"]} />
+      <AccountDetails bank={accounts["RBC"]} />
     </>
   );
 }
@@ -288,8 +288,8 @@ export function Row({
 }
 export function ConvinceUser({
                                  title,
-                                 opened, open, close
-                             }: { title: string, opened: boolean, open: any, close: any }) {
+                                 opened, open, close, img
+                             }: { title: string, opened: boolean, open: any, close: any, img: string }) {
     const navigate = useNavigate()
     const [acc, setAcc]: any = useRecoilState(accountsState);
     const [mOpened, {open: mOpen, close: mClose}] = useDisclosure(false);
@@ -304,7 +304,7 @@ export function ConvinceUser({
     >
         <div className={"flex flex-col gap-6 items-center h-full grow"}>
             <img
-                src={"td.png"}
+                src={img}
                 className={"object-cover w-24 h-24 rounded-full"}
             />
             <p className={"text-md font-medium"}>You will be securely redirected to {title}'s Portal</p>
@@ -364,11 +364,11 @@ export function ConvinceUser({
                     close();
                     setAcc({
                         ...acc,
-                        TD: accounts["TD"],
+                        [title]: accounts[title],
                     });
                     setTimeout(() => {
                         navigate("/accounts");
-                        toast.success("TD linked!", {
+                        toast.success(title+" linked!", {
                             description: "You can now access all your TD accounts",
                             duration: 2500,
                             position: "top-center",
@@ -413,12 +413,12 @@ export function AddAccount() {
                     className={"aspect-square flex justify-center items-center m-2 hoverable-card"}
                     onClick={cOpen}
                 >
-                    <img src={"co.webp"} className={"object-cover "}/>
+                    <img src={"co.jpg"} className={"object-cover "}/>
                 </Card>
             </div>
 
-            <ConvinceUser title={"TD"} opened={tOpened} open={tOpen} close={tClose}/>
-            <ConvinceUser title={"Capital One"} opened={cOpened} open={cOpen} close={cClose}/>
+            <ConvinceUser title={"TD"} opened={tOpened} open={tOpen} close={tClose} img={"td.png"}/>
+            <ConvinceUser title={"RBC"} opened={cOpened} open={cOpen} close={cClose} img={"co.jpg"}/>
         </>
     );
 }
@@ -497,9 +497,9 @@ const accounts = {
     to: "td",
     img: "td.png",
   },
-  "Capital One": {
-    img: "co.webp",
-    name: "Capital One",
+  "RBC": {
+    img: "co.jpg",
+    name: "RBC",
     accounts: {
       Chequing: {
         balance: 1000,
@@ -515,15 +515,8 @@ const accounts = {
         name: "Savings",
         icon: <HandCoinsIcon size={18} />,
       },
-      Credit: {
-        balance: -20,
-        description: "Visa",
-        account: 81236,
-        name: "Credit",
-        icon: <CreditCardIcon size={18} />,
-      },
     },
-    to: "capital-one",
+    to: "rbc",
     color: {
       bg: "bg-blue-100",
       text: "text-blue-900",

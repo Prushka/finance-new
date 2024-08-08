@@ -52,7 +52,7 @@ const router = createHashRouter([
         element: <TD />,
       },
       {
-        path: "accounts/capital-one",
+        path: "accounts/rbc",
         element: <CO />,
       },
     ],
