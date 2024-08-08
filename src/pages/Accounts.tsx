@@ -347,8 +347,7 @@ export function ConvinceUser({
                 <Modal opened={mOpened} onClose={mClose} title="Privacy Policy">
                     <p>
                         We do not store any of your bank account information. We use temporary
-                        tokens from your banks to access your account data (read-only). We only store your email and
-                        name for identification purposes.</p>
+                        tokens from your banks to access your account data (read-only). We only access and store your card schedules and transactions locally on device.</p>
                 </Modal>
                 <p>
                     Read our <span className={"underline cursor-pointer text-pink-700"}
