@@ -2,38 +2,21 @@ import { Avatar, Card, NumberFormatter, Progress } from "@mantine/core";
 import { ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import {accountsState, scheduleState} from "@/states.ts";
+import { accountsState, scheduleState } from "@/states.ts";
 import { Row2 } from "@/pages/Accounts.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import React from "react";
-import {Schedule, ScheduleRow} from "@/pages/Planning.tsx";
+import { Schedule, ScheduleRow } from "@/pages/Planning.tsx";
+import { RECENT_TRANSACTIONS } from "@/lib/useTransactions";
 
-const RECENT_TRANSACTIONS = [
-  {
-    name: "Sushi",
-    account: "TD *8563",
-    amount: 321.12,
-  },
-  {
-    name: "University of Toronto Bookstore",
-    account: "RBC *7342",
-    amount: 45.67,
-  },
-  {
-    name: "Starbucks",
-    account: "TD *8563",
-    amount: 12.5,
-  },
-  {
-    name: "Apple Store",
-    account: "RBC *7342",
-    amount: 1599.99,
-  },
-];
 export default function Home() {
   const [acc] = useRecoilState(accountsState);
   const navigate = useNavigate();
   const [schedules] = useRecoilState(scheduleState);
+
+  const recentTransactions = RECENT_TRANSACTIONS.filter(({ account }) => {
+    return Object.keys(acc).some((acc) => account.includes(acc));
+  });
 
   return (
     <div>
@@ -43,7 +26,7 @@ export default function Home() {
             <img src={"/finance.png"} className={"w-6 h-6 rounded-full"} />
             <h1 className="text-xl font-bold">Finance Fellas</h1>
           </div>
-          <Avatar radius="xl"/>
+          <Avatar radius="xl" />
         </div>
       </div>
 
@@ -64,7 +47,8 @@ export default function Home() {
               </div>
             ) : (
               Object.values(acc).map(({ name, img, accounts }) => (
-                <Row2 key={`${name}${img}`}
+                <Row2
+                  key={`${name}${img}`}
                   icon={<img src={img} className={"w-10 h-10 rounded-full"} />}
                   name={name}
                   description={`${Object.values(accounts).length} accounts`}
@@ -80,18 +64,19 @@ export default function Home() {
         <HomeCard title="Planning" to="/planning">
           <Card.Section className={"flex p-5 gap-5 flex-col"}>
             {schedules
-                .slice()
-                .sort(
-                    (a: Schedule, b: Schedule) =>
-                        new Date(a.date).getTime() - new Date(b.date).getTime()
-                ).slice(0, 2)
-                .map((a, index) => (
-                    <ScheduleRow
-                        key={index}
-                        schedule={a}
-                        prefix={a.si === "expense" ? "-" : ""}
-                    />
-                ))}
+              .slice()
+              .sort(
+                (a: Schedule, b: Schedule) =>
+                  new Date(a.date).getTime() - new Date(b.date).getTime()
+              )
+              .slice(0, 2)
+              .map((a, index) => (
+                <ScheduleRow
+                  key={index}
+                  schedule={a}
+                  prefix={a.si === "expense" ? "-" : ""}
+                />
+              ))}
           </Card.Section>
         </HomeCard>
 
@@ -143,7 +128,8 @@ export default function Home() {
             pb="sm"
             className="flex flex-col gap-3"
           >
-            {RECENT_TRANSACTIONS.map(({ name, account, amount }) => (
+            {recentTransactions.length === 0 && <p>No recent transactions.</p>}
+            {recentTransactions.map(({ name, account, amount }) => (
               <div key={name}>
                 <div className="flex justify-between items-center gap-2">
                   <p className="font-semibold">{name}</p>

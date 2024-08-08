@@ -37,7 +37,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { TRANSACTIONS_BY_DATE } from "@/pages/Transactions.tsx";
+import { TRANSACTIONS_BY_DATE } from "@/lib/useTransactions.tsx";
 
 export function TD() {
   return (
@@ -117,6 +117,12 @@ export function AccountDetails({ bank }: { bank: Bank }) {
   const [open, setOpen] = useState(false);
   const [, setAcc] = useRecoilState(accountsState);
   const navigate = useNavigate();
+
+  console.log(bank);
+  const recentTransactions = TRANSACTIONS_BY_DATE[0].transactions.filter(
+    ({ account }) => account.includes(bank.name)
+  );
+
   return (
     <>
       <div className="z-50 sticky top-0 bg-white p-5 border-b-[1px] border-b-gray-300 flex flex-col gap-6">
@@ -125,7 +131,7 @@ export function AccountDetails({ bank }: { bank: Bank }) {
             <ArrowLeftIcon />
           </Link>
           <h1 className="text-xl font-bold self-center">{bank.name}</h1>
-            <img src={"./" + bank.img} className={"w-8 h-8 rounded-full"} />
+          <img src={"./" + bank.img} className={"w-8 h-8 rounded-full"} />
         </div>
       </div>
 
@@ -136,7 +142,8 @@ export function AccountDetails({ bank }: { bank: Bank }) {
               <CardTitle>Net Worth</CardTitle>
 
               <CardTitle>
-                ${Object.values(bank.accounts)
+                $
+                {Object.values(bank.accounts)
                   .reduce((acc, { balance }) => acc + balance, 0)
                   .toFixed(2)}
               </CardTitle>
@@ -163,7 +170,8 @@ export function AccountDetails({ bank }: { bank: Bank }) {
           </CardHeader>
 
           <CardContent className={"gap-4 flex flex-col"}>
-            {TRANSACTIONS_BY_DATE[0].transactions.map(
+            {recentTransactions.length === 0 && <p>No recent transactions.</p>}
+            {recentTransactions.map(
               ({ name, account, category, icon, amount, pending }) => (
                 <button
                   key={name}
@@ -302,13 +310,17 @@ export function AddAccount() {
           className={"col-span-2"}
         ></TextInput>
         <Card
-          className={"aspect-square flex justify-center items-center m-2 hoverable-card"}
+          className={
+            "aspect-square flex justify-center items-center m-2 hoverable-card"
+          }
           onClick={tOpen}
         >
           <img src={"td.png"} className={"object-cover "} />
         </Card>
         <Card
-          className={"aspect-square flex justify-center items-center m-2 hoverable-card"}
+          className={
+            "aspect-square flex justify-center items-center m-2 hoverable-card"
+          }
           onClick={cOpen}
         >
           <img src={"co.webp"} className={"object-cover "} />
@@ -365,7 +377,11 @@ export function AddAccount() {
             className={"flex gap-3 items-center mt-auto text-gray-500 text-sm"}
           >
             <p>
-              Read our <span className={"underline cursor-pointer"}>terms of services</span>!
+              Read our{" "}
+              <span className={"underline cursor-pointer"}>
+                terms of services
+              </span>
+              !
             </p>
           </div>
           <Button
@@ -404,7 +420,9 @@ export function AddAccount() {
             src={"co.webp"}
             className={"object-cover w-24 h-24 rounded-full"}
           />
-          <p className={"text-md font-medium"}>We will redirect you to Capital One</p>
+          <p className={"text-md font-medium"}>
+            We will redirect you to Capital One
+          </p>
           <Card className={"w-full flex flex-col p-4 gap-4"}>
             <div className={"flex gap-3 items-center"}>
               <div
@@ -442,7 +460,11 @@ export function AddAccount() {
             className={"flex gap-3 items-center mt-auto text-gray-500 text-sm"}
           >
             <p>
-              Read our <span className={"underline cursor-pointer"}>terms of services</span>!
+              Read our{" "}
+              <span className={"underline cursor-pointer"}>
+                terms of services
+              </span>
+              !
             </p>
           </div>
           <Button
@@ -492,7 +514,7 @@ export default function Accounts() {
       <div className={"flex flex-col gap-5 p-5"}>
         {Object.values(acc).length === 0 ? (
           <Card
-              className={"hoverable-card"}
+            className={"hoverable-card"}
             onClick={() => {
               navigate("/accounts-add");
             }}
@@ -615,7 +637,7 @@ function BankCard({ bank }: { bank: Bank }) {
       <CardHeader>
         <div className={"flex justify-between items-center"}>
           <div className={"flex gap-4 items-center"}>
-            <img src={bank.img} className={'w-12 h-12 rounded-full'}/>
+            <img src={bank.img} className={"w-12 h-12 rounded-full"} />
             <div className={"flex flex-col h-full justify-center gap-1"}>
               <CardTitle>{bank.name}</CardTitle>
               <CardDescription>
@@ -653,17 +675,21 @@ export function Row2({
   name,
   description,
   value,
-  onClick, className
+  onClick,
+  className,
 }: {
   icon: any;
   name: string;
   description: string;
   onClick?: any;
   value: string;
-    className?: string;
+  className?: string;
 }) {
   return (
-    <div className={`flex justify-between items-center ${className}`} onClick={onClick}>
+    <div
+      className={`flex justify-between items-center ${className}`}
+      onClick={onClick}
+    >
       <div className={"flex gap-4"}>
         <div
           className={

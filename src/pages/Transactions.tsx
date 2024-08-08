@@ -1,3 +1,5 @@
+import { TRANSACTIONS_BY_DATE } from "@/lib/useTransactions";
+import { accountsState } from "@/states";
 import {
   ActionIcon,
   Chip,
@@ -6,91 +8,13 @@ import {
   ScrollAreaAutosize,
   TextInput,
 } from "@mantine/core";
-import {
-  CarIcon,
-  FilterIcon,
-  Search,
-  ShoppingBag,
-  Utensils,
-} from "lucide-react";
+import { FilterIcon, Search } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-
-const size = 18;
-
-export const TRANSACTIONS_BY_DATE = [
-  {
-    when: "Yesterday",
-    transactions: [
-      {
-        name: "Sushi",
-        category: "Restaurant",
-        icon: <Utensils size={size} />,
-        account: "TD *8563",
-        amount: 321.12,
-        pending: true,
-        date: "August 4, 2024 at 6:54pm",
-      },
-      {
-        name: "University of Toronto Bookstore",
-        category: "Retail",
-        icon: <ShoppingBag size={size} />,
-        account: "RBC *7342",
-        amount: 45.67,
-        pending: true,
-        date: "August 4, 2024 at 3:12pm",
-      },
-    ],
-  },
-  {
-    when: "August 1, 2024",
-    transactions: [
-      {
-        name: "Starbucks",
-        category: "Restaurant",
-        icon: <Utensils size={size} />,
-        account: "TD *8563",
-        amount: 12.5,
-        pending: false,
-        date: "August 1, 2024 at 2:32pm",
-      },
-      {
-        name: "Apple Store",
-        category: "Retail",
-        icon: <ShoppingBag size={size} />,
-        account: "RBC *7342",
-        amount: 1599.99,
-        pending: false,
-        date: "August 1, 2024 at 10:16am",
-      },
-    ],
-  },
-  {
-    when: "July 31, 2024",
-    transactions: [
-      {
-        name: "Amazon",
-        category: "Retail",
-        icon: <ShoppingBag size={size} />,
-        account: "TD *8563",
-        amount: 89.99,
-        pending: false,
-        date: "July 31, 2024 at 8:55pm",
-      },
-      {
-        name: "Gas Station",
-        category: "Transportation",
-        icon: <CarIcon size={size} />,
-        account: "RBC *7342",
-        amount: 50.0,
-        pending: false,
-        date: "July 31, 2024 at 9:23am",
-      },
-    ],
-  },
-];
+import { useRecoilState } from "recoil";
 
 export default function Transactions() {
+  const [acc] = useRecoilState(accountsState);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTransactionIdx, setSelectedTransactionIdx] = useState<
     [number, number]
@@ -144,37 +68,41 @@ export default function Transactions() {
         {TRANSACTIONS_BY_DATE.map(({ when, transactions }, dateIdx) => (
           <div key={when} className="flex flex-col mt-4">
             <h2 className="text-sm text-gray-500 px-4 mb-4">{when}</h2>
-            {transactions.map(
-              (
-                { name, account, category, icon, amount, pending },
-                transactionIdx
-              ) => (
-                <button
-                  key={name}
-                  className="text-left flex justify-between items-center gap-2 bg-white hover:bg-gray-200 p-4"
-                  onClick={() => {
-                    setSelectedTransactionIdx([
-                      dateIdx,
-                      transactionIdx,
-                    ] as const);
-                    setModalOpen(true);
-                  }}
-                >
-                  <div className="mr-2 flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full">
-                    {icon}
-                  </div>
-                  <div>
-                    <p className="font-semibold">{name}</p>
-                    <p className="text-xs">{account}</p>
-                    <p className="text-xs text-gray-500">{category}</p>
-                  </div>
-                  <div className="flex-1 text-right self-start">
-                    <p className="font-semibold">-${amount.toFixed(2)}</p>
-                    {pending && <Pill>Pending</Pill>}
-                  </div>
-                </button>
+            {transactions
+              .filter(({ account }) =>
+                Object.keys(acc).some((key) => account.includes(key))
               )
-            )}
+              .map(
+                (
+                  { name, account, category, icon, amount, pending },
+                  transactionIdx
+                ) => (
+                  <button
+                    key={name}
+                    className="text-left flex justify-between items-center gap-2 bg-white hover:bg-gray-200 p-4"
+                    onClick={() => {
+                      setSelectedTransactionIdx([
+                        dateIdx,
+                        transactionIdx,
+                      ] as const);
+                      setModalOpen(true);
+                    }}
+                  >
+                    <div className="mr-2 flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full">
+                      {icon}
+                    </div>
+                    <div>
+                      <p className="font-semibold">{name}</p>
+                      <p className="text-xs">{account}</p>
+                      <p className="text-xs text-gray-500">{category}</p>
+                    </div>
+                    <div className="flex-1 text-right self-start">
+                      <p className="font-semibold">-${amount.toFixed(2)}</p>
+                      {pending && <Pill>Pending</Pill>}
+                    </div>
+                  </button>
+                )
+              )}
           </div>
         ))}
       </section>
