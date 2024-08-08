@@ -40,30 +40,30 @@ export default function Budget() {
 
   const [isEditing, setIsEditing] = useState(false);
 
+  const [budgetAmount, setBudgetAmount] = useState([
+    800, 200, 100, 300, 200, 200,
+  ]);
+  const [budgetAmountForm, setBudgetAmountForm] = useState(budgetAmount);
+
   const budgetCategories = [
     {
       name: "Food",
-      total: 800,
       spent: 563.72,
     },
     {
       name: "Entertainment",
-      total: 200,
       spent: 48.32,
     },
     {
       name: "Transportation",
-      total: 100,
       spent: 100,
     },
     {
       name: "Shopping",
-      total: 300,
       spent: 212.31,
     },
     {
       name: "Bills",
-      total: 200,
       spent: 182.33,
     },
     {
@@ -71,16 +71,9 @@ export default function Budget() {
       total: 200,
       spent: 50,
     },
-    {
-      name: "Expense: Rent",
-      total: 1000,
-      spent: 1000,
-    },
   ];
 
-  const monthlyTotal = budgetCategories
-    .map(({ total }) => total)
-    .reduce((a, b) => a + b, 0);
+  const monthlyTotal = budgetAmountForm.reduce((a, b) => a + b, 0);
   const monthlySpent = budgetCategories
     .map(({ spent }) => spent)
     .reduce((a, b) => a + b, 0);
@@ -90,22 +83,36 @@ export default function Budget() {
 
   const editButton = isCurrentMonth && (
     <div className={"flex gap-4"}>
-      {isEditing && <Button variant={"secondary"} onClick={() => {
-            setIsEditing((prev) => !prev);
-      }}>Cancel</Button>}
-      <Button className={"w-36"}
+      {isEditing && (
+        <Button
+          variant={"secondary"}
           onClick={() => {
             setIsEditing((prev) => !prev);
+            if (isEditing) {
+              setBudgetAmountForm(budgetAmount);
+            }
           }}
+        >
+          Cancel
+        </Button>
+      )}
+      <Button
+        className={"w-36"}
+        onClick={() => {
+          setIsEditing((prev) => !prev);
+          if (isEditing) {
+            setBudgetAmount(budgetAmountForm);
+          }
+        }}
       >
         {!isEditing ? (
-            <>
-              <PencilIcon className="size-4 mr-2" /> Edit budget
-            </>
+          <>
+            <PencilIcon className="size-4 mr-2" /> Edit budget
+          </>
         ) : (
-            <>
-              <SaveIcon className="size-4 mr-2" /> Save budget
-            </>
+          <>
+            <SaveIcon className="size-4 mr-2" /> Save budget
+          </>
         )}
       </Button>
     </div>
@@ -150,28 +157,12 @@ export default function Budget() {
     <section>
       <div className="flex mb-2 font-semibold justify-between items-center text-lg">
         <h2>Total Monthly Budget</h2>
-        {!isEditing ? (
-          <NumberFormatter
-            value={monthlyTotal}
-            prefix="$"
-            thousandSeparator
-            decimalScale={2}
-          />
-        ) : (
-          <NumberInput
-            defaultValue={monthlyTotal}
-            prefix="$"
-            thousandSeparator
-            decimalScale={2}
-            hideControls
-            allowNegative={false}
-            styles={{
-              input: {
-                textAlign: "right",
-              },
-            }}
-          />
-        )}
+        <NumberFormatter
+          value={monthlyTotal}
+          prefix="$"
+          thousandSeparator
+          decimalScale={2}
+        />
       </div>
       <div className="flex gap-1 items-center">
         <Progress
@@ -196,7 +187,8 @@ export default function Budget() {
 
   const budgetCategoriesSection = (
     <section className="flex flex-col gap-5">
-      {budgetCategories.map(({ name, total, spent }) => {
+      {budgetCategories.map(({ name, spent }, idx) => {
+        const total = budgetAmountForm[idx];
         const remaining = total - spent;
         const spentPercentage = (spent / total) * 100;
 
@@ -209,6 +201,12 @@ export default function Budget() {
               ) : (
                 <NumberInput
                   defaultValue={total}
+                  value={budgetAmountForm[idx]}
+                  onChange={(value) => {
+                    const newBudgetAmountForm = [...budgetAmountForm];
+                    newBudgetAmountForm[idx] = Number(value);
+                    setBudgetAmountForm(newBudgetAmountForm);
+                  }}
                   prefix="$"
                   thousandSeparator
                   decimalScale={2}
@@ -227,7 +225,6 @@ export default function Budget() {
                 value={spentPercentage}
                 className="w-full"
                 color="#6A43DD"
-
               />
               <p className="text-sm text-gray-500 text-right w-[125px]">
                 <NumberFormatter
