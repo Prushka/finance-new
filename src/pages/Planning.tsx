@@ -24,7 +24,6 @@ import {
 
 import {
     Autocomplete,
-    Indicator,
     NumberInput,
     Select,
     TextInput,
@@ -47,8 +46,9 @@ import {useRecoilState} from "recoil";
 import {scheduleState} from "@/states.ts";
 import {toast} from "sonner";
 import {useNavigate} from "react-router-dom";
-import {Calendar} from "@mantine/dates";
 import {LineChart} from "@mantine/charts";
+import {Label} from "@/components/ui/label.tsx";
+import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group.tsx";
 
 function Required() {
     return <span className={"leading-4 text-sm text-red-500"}>*</span>;
@@ -202,15 +202,21 @@ function ScheduleDrawer({
                     )}
                 </div>
             ) : (
-                <div className={"grid grid-cols-2 gap-4 items-end"}>
-                    <div className={"text-sm font-medium self-center"}>
-                        What's your schedule? <Required/>
+                <div className={"flex flex-col gap-4"}>
+                    <div className={"text-sm font-medium"}>
+                        In or Out?<Required/>
                     </div>
-                    <TabGroup2
-                        selected={t}
-                        setSelected={setT}
-                        options={["Expense", "Income"]}
-                    />
+                    <RadioGroup defaultValue={t} onValueChange={setT} orientation={"horizontal"}
+                                className={"grid-flow-col max-w-48"}>
+                        <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="Expense" id="r1"/>
+                            <Label htmlFor="r1">Expense</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="Income" id="r2"/>
+                            <Label htmlFor="r2">Income</Label>
+                        </div>
+                    </RadioGroup>
                     <Autocomplete
                         label={
                             <span>
@@ -223,11 +229,11 @@ function ScheduleDrawer({
                         onChange={setType}
                     />
 
-                    <TextInput
-                        value={label}
-                        onChange={(event) => setLabel(event.currentTarget.value)}
-                        label={<p>Label</p>}
-                    />
+                    {/*<TextInput*/}
+                    {/*    value={label}*/}
+                    {/*    onChange={(event) => setLabel(event.currentTarget.value)}*/}
+                    {/*    label={<p>Label</p>}*/}
+                    {/*/>*/}
                     <NumberInput
                         leftSection={<span>$</span>}
                         value={amount}
@@ -238,16 +244,16 @@ function ScheduleDrawer({
                             </p>
                         }
                     />
-                    <Select
-                        label="Associated Account"
-                        placeholder=""
-                        data={["TD", "RBC"]}
-                        value={account}
-                        onChange={setAccount}
-                    />
                     <DatePicker date={date} setDate={setDate}>
                         Schedule starts at <Required/>
                     </DatePicker>
+                    <DatePicker
+                        date={endDate}
+                        setDate={setEndDate}
+                    >
+                        Schedule ends at
+                    </DatePicker>
+
 
                     <Select
                         label="Repeats Every"
@@ -266,17 +272,17 @@ function ScheduleDrawer({
                         onChange={setRepeats}
                     />
 
-                    <DatePicker
-                        className={"col-span-2"}
-                        date={endDate}
-                        setDate={setEndDate}
-                    >
-                        Schedule ends at
-                    </DatePicker>
+                    <Select
+                        label="Associated Account"
+                        placeholder=""
+                        data={["TD", "RBC"]}
+                        value={account}
+                        onChange={setAccount}
+                    />
 
                     {s && (
                         <Button
-                            className={"col-span-2 mt-4"}
+                            className={"mt-4"}
                             variant={"destructive"}
                             onClick={() => {
                                 close();
@@ -293,7 +299,6 @@ function ScheduleDrawer({
                         </Button>
                     )}
                     <Button
-                        className={"col-span-2"}
                         onClick={() => {
                             close();
                             setSchedules((prev) => {
@@ -415,7 +420,7 @@ export default function Planning() {
         <>
             <div className="z-50 sticky top-0 bg-white p-5 border-b-[1px] border-b-gray-300 flex flex-col gap-6">
                 <div className="flex justify-between items-center w-full">
-                    <h1 className="text-xl font-bold self-center">Planning</h1>
+                    <h1 className="text-xl font-bold self-center">Schedules</h1>
                 </div>
             </div>
             <div className={"flex flex-col gap-5 p-5"}>
@@ -473,7 +478,7 @@ export default function Planning() {
                 <Card>
                     <CardHeader>
                         <div className={"flex items-center"}>
-                            <CardTitle className={"flex-1"}>Schedules</CardTitle>
+                            {/*<CardTitle className={"flex-1"}>Schedules</CardTitle>*/}
                             <TabGroup2
                                 selected={d}
                                 setSelected={setD}
@@ -490,12 +495,12 @@ export default function Planning() {
                                 variant={"secondary"}
                                 className={"flex gap-2"}
                             >
-                                <PlusIcon/> Add schedule
+                                Add Schedule
                             </Button>
                             </div>
                         </div>
                     </CardHeader>
-                    <CardContent className={"flex flex-col gap-4"}>
+                    <CardContent className={"flex flex-col px-2"}>
                         {schedules
                             .slice()
                             .sort(
@@ -505,6 +510,7 @@ export default function Planning() {
                             .filter((a: Schedule) => a.si === d.toLowerCase())
                             .map((a, index) => (
                                 <ScheduleRow
+                                    className={"border-transparent hover:border-gray-400 rounded-xl border p-3 transition-all"}
                                     onClick={() => {
                                         setSelectedSchedule(a);
                                         setViewOnly(false);
@@ -539,10 +545,12 @@ export function ScheduleRow({
                                 schedule,
                                 prefix = "",
                                 onClick,
+    className
                             }: {
     schedule: Schedule;
     prefix?: string;
     onClick?: any;
+    className?: string;
 }) {
     const {type, amount, date, label} = schedule;
     const d = new Date(date).toLocaleDateString();
@@ -551,7 +559,7 @@ export function ScheduleRow({
     );
     return (
         <Row2
-            className={"cursor-pointer"}
+            className={`cursor-pointer ${className}`}
             onClick={onClick}
             icon={types.expense?.[type] ?? types.income?.[type] ?? <MoreHorizontal/>}
             name={label || type}

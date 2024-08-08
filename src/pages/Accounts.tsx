@@ -103,7 +103,7 @@ export function TabGroup2({
       {options.map((o) => (
         <Button
           key={o}
-          variant={selected === o ? "default" : "ghost"}
+          variant={selected === o ? "default" : "outline"}
           onClick={() => setSelected(o)}
         >
           {o}

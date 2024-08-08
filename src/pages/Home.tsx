@@ -61,7 +61,7 @@ export default function Home() {
           </Card.Section>
         </HomeCard>
 
-        <HomeCard title="Planning" to="/planning">
+        <HomeCard title="Schedules" to="/planning">
           <Card.Section className={"flex p-5 gap-5 flex-col"}>
             {schedules
               .slice()
