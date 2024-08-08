@@ -351,7 +351,7 @@ export function ConvinceUser({
                         name for identification purposes.</p>
                 </Modal>
                 <p>
-                    Read our <span className={"underline cursor-pointer"}
+                    Read our <span className={"underline cursor-pointer text-pink-700"}
                                    onClick={() => {
                                        mOpen()
                                    }}

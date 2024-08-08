@@ -139,7 +139,7 @@ function ScheduleDrawer({
         <Drawer
             opened={opened}
             onClose={close}
-            size={s?.auto || viewOnly ? "md" : "lg"}
+            size={s?.auto || viewOnly ? "md" : "xl"}
             position={"bottom"}
             title={
                 s?.auto
