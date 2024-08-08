@@ -55,7 +55,7 @@ export default function Root() {
   const {width } = useWindowDimensions();
 
   return (
-      width > 824 ? <div className={"flex w-full h-full items-center justify-center text-center p-6"}>
+      width > 900 ? <div className={"flex w-full h-full items-center justify-center text-center p-6"}>
         <h1 className={"text-xl font-medium"}>Welcome to Finance Fellas! 🥳<hr/>
           For the best experience, please view this content in <strong>a narrower window</strong> or <strong className={"font-bold"}>on your mobile device</strong> .</h1>
           </div> :
