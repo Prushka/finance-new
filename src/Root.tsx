@@ -1,5 +1,6 @@
 import { AppShell } from "@mantine/core";
 import {
+  ArrowRightLeftIcon,
   ChartLineIcon,
   HomeIcon,
   PiggyBankIcon,
@@ -9,7 +10,12 @@ import { Outlet, NavLink } from "react-router-dom";
 import { Toaster } from "sonner";
 
 const NAV_BUTTONS = [
-  { label: "Home", to: "/", icon: <HomeIcon />, includes: ["transactions"] },
+  { label: "Home", to: "/", icon: <HomeIcon /> },
+  {
+    label: "Transactions",
+    to: "/transactions",
+    icon: <ArrowRightLeftIcon />,
+  },
   {
     label: "Accounts",
     to: "/accounts",
@@ -31,7 +37,7 @@ export default function Root() {
         <Outlet />
       </AppShell.Main>
       <AppShell.Footer>
-        <nav className="h-full max-w-[600px] mx-auto grid grid-cols-4">
+        <nav className="h-full max-w-[600px] mx-auto grid grid-cols-5">
           {NAV_BUTTONS.map(({ label, to, icon, includes }) => (
             <NavLink
               key={to}
