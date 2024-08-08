@@ -1,16 +1,16 @@
-import { Drawer, Pill, TextInput } from "@mantine/core";
+import { Drawer, Modal, Pill, TextInput } from "@mantine/core";
 import {
-  ArrowLeftIcon,
-  ChevronRightIcon,
-  CoinsIcon,
-  CreditCardIcon,
-  File,
-  HandCoinsIcon,
-  HashIcon,
-  LandmarkIcon,
-  PlusIcon,
-  RefreshCcw,
-  ShieldAlert,
+    ArrowLeftIcon,
+    ChevronRightIcon,
+    CoinsIcon,
+    CreditCardIcon,
+    File, GlobeLock,
+    HandCoinsIcon,
+    HashIcon,
+    LandmarkIcon,
+    PlusIcon,
+    RefreshCcw,
+    ShieldAlert,
 } from "lucide-react";
 import {
   Card,
@@ -286,214 +286,141 @@ export function Row({
     </div>
   );
 }
+export function ConvinceUser({
+                                 title,
+                                 opened, open, close
+                             }: { title: string, opened: boolean, open: any, close: any }) {
+    const navigate = useNavigate()
+    const [acc, setAcc]: any = useRecoilState(accountsState);
+    const [mOpened, {open: mOpen, close: mClose}] = useDisclosure(false);
 
-export function AddAccount() {
-  const [acc, setAcc]: any = useRecoilState(accountsState);
-
-  const [tOpened, { open: tOpen, close: tClose }] = useDisclosure(false);
-  const [cOpened, { open: cOpen, close: cClose }] = useDisclosure(false);
-
-  const navigate = useNavigate();
-  return (
-    <>
-      <div className="z-50 sticky top-0 bg-white p-5 border-b-[1px] border-b-gray-300 flex flex-col gap-6">
-        <div className="flex justify-between items-center w-full">
-          <Link to={"/accounts"}>
-            <ArrowLeftIcon />
-          </Link>
-          <h1 className="text-xl font-bold self-center">Link an account</h1>
-        </div>
-      </div>
-      <div className={"grid grid-cols-2 gap-5 p-5"}>
-        <TextInput
-          placeholder={"Search your institution"}
-          className={"col-span-2"}
-        ></TextInput>
-        <Card
-          className={
-            "aspect-square flex justify-center items-center m-2 hoverable-card"
-          }
-          onClick={tOpen}
-        >
-          <img src={"td.png"} className={"object-cover "} />
-        </Card>
-        <Card
-          className={
-            "aspect-square flex justify-center items-center m-2 hoverable-card"
-          }
-          onClick={cOpen}
-        >
-          <img src={"co.webp"} className={"object-cover "} />
-        </Card>
-      </div>
-      <Drawer
+    return <Drawer
         position="bottom"
         size={"xl"}
-        opened={tOpened}
-        onClose={tClose}
+        opened={opened}
+        onClose={close}
         title={"TD"}
         className={"f-drawer"}
-      >
+    >
         <div className={"flex flex-col gap-6 items-center h-full grow"}>
-          <img
-            src={"td.png"}
-            className={"object-cover w-24 h-24 rounded-full"}
-          />
-          <p className={"text-md font-medium"}>We will redirect you to TD</p>
-          <Card className={"w-full flex flex-col p-4 gap-4"}>
-            <div className={"flex gap-3 items-center"}>
-              <div
-                className={
-                  "w-10 h-10 bg-gray-100 rounded-full flex justify-center items-center text-gray-900"
-                }
-              >
-                <ShieldAlert size={18} />
-              </div>
-              <div className={"flex flex-col h-full justify-center gap-1"}>
-                <p className={"leading-4"}>Data Security</p>
-                <p className={"text-gray-500 text-xs leading-4"}>
-                  Your data is safe with us!
+            <img
+                src={"td.png"}
+                className={"object-cover w-24 h-24 rounded-full"}
+            />
+            <p className={"text-md font-medium"}>You will be securely redirected to {title}'s Portal</p>
+            <Card className={"w-full flex flex-col p-4 gap-4"}>
+                <div className={"flex gap-3 items-center"}>
+                    <div
+                        className={
+                            "w-10 h-10 bg-gray-100 rounded-full flex justify-center items-center text-gray-900"
+                        }
+                    >
+                        <ShieldAlert size={18}/>
+                    </div>
+                    <div className={"flex flex-col h-full justify-center gap-1"}>
+                        <p className={"leading-4"}>Read-only Access</p>
+                        <ol className={"text-gray-500 text-xs leading-4"}>
+                            <li>We sync only transactions and cards schedules.</li>
+                        </ol>
+                    </div>
+                </div>
+                <div className={"flex gap-3 items-center"}>
+                    <div
+                        className={
+                            "w-10 h-10 bg-gray-100 rounded-full flex justify-center items-center text-gray-900"
+                        }
+                    >
+                        <GlobeLock size={18}/>
+                    </div>
+                    <div className={"flex flex-col h-full justify-center gap-1"}>
+                        <p className={"leading-4"}>Data Privacy</p>
+                        <p className={"text-gray-500 text-xs leading-4"}>
+                            Our site never collects sensitive account information. We use temporary tokens to read your
+                            data.
+                        </p>
+                    </div>
+                </div>
+            </Card>
+            <div
+                className={"flex gap-3 items-center mt-auto text-gray-500 text-sm"}
+            >
+                <Modal opened={mOpened} onClose={mClose} title="Privacy Policy">
+                    <p>
+                        We do not store any of your bank account information. We use temporary
+                        tokens from your banks to access your account data (read-only). We only store your email and
+                        name for identification purposes.</p>
+                </Modal>
+                <p>
+                    Read our <span className={"underline cursor-pointer"}
+                                   onClick={() => {
+                                       mOpen()
+                                   }}
+                >privacy terms</span>!
                 </p>
-              </div>
             </div>
-            <div className={"flex gap-3 items-center"}>
-              <div
-                className={
-                  "w-10 h-10 bg-gray-100 rounded-full flex justify-center items-center text-gray-900"
-                }
-              >
-                <RefreshCcw size={18} />
-              </div>
-              <div className={"flex flex-col h-full justify-center gap-1"}>
-                <p className={"leading-4"}>Automatic Syncing</p>
-                <p className={"text-gray-500 text-xs leading-4"}>
-                  Everything will be synced!
-                </p>
-              </div>
-            </div>
-          </Card>
-
-          <div
-            className={"flex gap-3 items-center mt-auto text-gray-500 text-sm"}
-          >
-            <p>
-              Read our{" "}
-              <span className={"underline cursor-pointer"}>
-                terms of services
-              </span>
-              !
-            </p>
-          </div>
-          <Button
-            className={"w-full"}
-            onClick={() => {
-              cClose();
-              setAcc({
-                ...acc,
-                TD: accounts["TD"],
-              });
-              setTimeout(() => {
-                navigate("/accounts");
-                toast.success("TD linked!", {
-                  description: "You can now access all your TD accounts",
-                  duration: 2500,
-                  position: "top-center",
-                  closeButton: true,
-                });
-              }, 400);
-            }}
-          >
-            CONTINUE
-          </Button>
+            <Button
+                className={"w-full"}
+                onClick={() => {
+                    close();
+                    setAcc({
+                        ...acc,
+                        TD: accounts["TD"],
+                    });
+                    setTimeout(() => {
+                        navigate("/accounts");
+                        toast.success("TD linked!", {
+                            description: "You can now access all your TD accounts",
+                            duration: 2500,
+                            position: "top-center",
+                            closeButton: true,
+                        });
+                    }, 400);
+                }}
+            >
+                CONTINUE
+            </Button>
         </div>
-      </Drawer>
-      <Drawer
-        position="bottom"
-        size={"xl"}
-        opened={cOpened}
-        onClose={cClose}
-        title={"Capital One"}
-        className={"f-drawer"}
-      >
-        <div className={"flex flex-col gap-6 items-center h-full grow"}>
-          <img
-            src={"co.webp"}
-            className={"object-cover w-24 h-24 rounded-full"}
-          />
-          <p className={"text-md font-medium"}>
-            We will redirect you to Capital One
-          </p>
-          <Card className={"w-full flex flex-col p-4 gap-4"}>
-            <div className={"flex gap-3 items-center"}>
-              <div
-                className={
-                  "w-10 h-10 bg-gray-100 rounded-full flex justify-center items-center text-gray-900"
-                }
-              >
-                <ShieldAlert size={18} />
-              </div>
-              <div className={"flex flex-col h-full justify-center gap-1"}>
-                <p className={"leading-4"}>Data Security</p>
-                <p className={"text-gray-500 text-xs leading-4"}>
-                  Your data is safe with us!
-                </p>
-              </div>
-            </div>
-            <div className={"flex gap-3 items-center"}>
-              <div
-                className={
-                  "w-10 h-10 bg-gray-100 rounded-full flex justify-center items-center text-gray-900"
-                }
-              >
-                <RefreshCcw size={18} />
-              </div>
-              <div className={"flex flex-col h-full justify-center gap-1"}>
-                <p className={"leading-4"}>Automatic Syncing</p>
-                <p className={"text-gray-500 text-xs leading-4"}>
-                  Everything will be synced!
-                </p>
-              </div>
-            </div>
-          </Card>
+    </Drawer>
 
-          <div
-            className={"flex gap-3 items-center mt-auto text-gray-500 text-sm"}
-          >
-            <p>
-              Read our{" "}
-              <span className={"underline cursor-pointer"}>
-                terms of services
-              </span>
-              !
-            </p>
-          </div>
-          <Button
-            className={"w-full"}
-            onClick={() => {
-              cClose();
-              setAcc({
-                ...acc,
-                "Capital One": accounts["Capital One"],
-              });
-              setTimeout(() => {
-                navigate("/accounts");
+}
 
-                toast.success("Capital One linked!", {
-                  description:
-                    "You can now access all your Capital One accounts",
-                  duration: 2500,
-                  position: "top-center",
-                  closeButton: true,
-                });
-              }, 400);
-            }}
-          >
-            CONTINUE
-          </Button>
-        </div>
-      </Drawer>
-    </>
-  );
+export function AddAccount() {
+
+    const [tOpened, {open: tOpen, close: tClose}] = useDisclosure(false);
+    const [cOpened, {open: cOpen, close: cClose}] = useDisclosure(false);
+    return (
+        <>
+            <div className="z-50 sticky top-0 bg-white p-5 border-b-[1px] border-b-gray-300 flex flex-col gap-6">
+                <div className="flex justify-between items-center w-full">
+                    <Link to={"/accounts"}>
+                        <ArrowLeftIcon/>
+                    </Link>
+                    <h1 className="text-xl font-bold self-center">Link an account</h1>
+                </div>
+            </div>
+            <div className={"grid grid-cols-2 gap-5 p-5"}>
+                <TextInput
+                    placeholder={"Search your institution"}
+                    className={"col-span-2"}
+                ></TextInput>
+                <Card
+                    className={"aspect-square flex justify-center items-center m-2 hoverable-card"}
+                    onClick={tOpen}
+                >
+                    <img src={"td.png"} className={"object-cover "}/>
+                </Card>
+                <Card
+                    className={"aspect-square flex justify-center items-center m-2 hoverable-card"}
+                    onClick={cOpen}
+                >
+                    <img src={"co.webp"} className={"object-cover "}/>
+                </Card>
+            </div>
+
+            <ConvinceUser title={"TD"} opened={tOpened} open={tOpen} close={tClose}/>
+            <ConvinceUser title={"Capital One"} opened={cOpened} open={cOpen} close={cClose}/>
+        </>
+    );
 }
 
 export default function Accounts() {
