@@ -139,7 +139,7 @@ function ScheduleDrawer({
         <Drawer
             opened={opened}
             onClose={close}
-            size={s?.auto || viewOnly ? "md" : "xl"}
+            size={s?.auto || viewOnly ? "md" : "lg"}
             position={"bottom"}
             title={
                 s?.auto
@@ -272,13 +272,6 @@ function ScheduleDrawer({
                         onChange={setRepeats}
                     />
 
-                    <Select
-                        label="Associated Account"
-                        placeholder=""
-                        data={["TD", "RBC"]}
-                        value={account}
-                        onChange={setAccount}
-                    />
 
                     {s && (
                         <Button
