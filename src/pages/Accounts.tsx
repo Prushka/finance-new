@@ -99,12 +99,13 @@ export function TabGroup2({
   setSelected: any;
 }) {
   return (
-    <div className={`flex gap-2 ${className}`}>
+    <div className={`flex ${className} border border-gray-700 rounded-lg p-1`}>
       {options.map((o) => (
         <Button
           key={o}
-          variant={selected === o ? "default" : "outline"}
+          variant={selected === o ? "default" : "ghost"}
           onClick={() => setSelected(o)}
+          className={'h-8'}
         >
           {o}
         </Button>

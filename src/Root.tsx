@@ -1,7 +1,8 @@
 import { AppShell } from "@mantine/core";
 import {
+  ArrowRightCircle,
   ArrowRightLeftIcon,
-  ChartLineIcon,
+  ChartLineIcon, ChevronLeftIcon, ChevronRightIcon,
   HomeIcon,
   PiggyBankIcon,
   WalletCardsIcon,
@@ -55,10 +56,12 @@ export default function Root() {
   const {width } = useWindowDimensions();
 
   return (
-      width > 900 ? <div className={"flex w-full h-full items-center justify-center text-center p-6"}>
+      width > 900 ? <div className={"flex w-full h-full items-center justify-center text-center p-6 gap-8"}>
+        <ChevronRightIcon size={48}/>
         <h1 className={"text-xl font-medium"}>Welcome to Finance Fellas! 🥳<hr/>
-          For the best experience, please view this content in <strong>a narrower window</strong> or <strong className={"font-bold"}>on your mobile device</strong> .</h1>
-          </div> :
+          For the best experience, please view in <strong>a narrower window</strong> or <strong className={"font-bold"}>on your mobile device</strong> .</h1>
+            <ChevronLeftIcon size={48}/>
+      </div> :
     <AppShell
       footer={{
         height: 56,
