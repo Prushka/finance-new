@@ -335,7 +335,11 @@ export function ConvinceUser({
                 className={"object-cover w-24 h-24 rounded-full"}
             />
             <p className={"text-md font-medium"}>You will be securely redirected to {title}'s Portal</p>
-            <Card className={"w-full flex flex-col p-4 gap-4"}>
+            <Card
+                onClick={() => {
+                    mOpen()
+                }}
+                className={"w-full flex flex-col p-4 gap-4 hoverable-card"}>
                 <div className={"flex gap-3 items-center"}>
                     <div
                         className={
@@ -381,7 +385,7 @@ export function ConvinceUser({
                                    onClick={() => {
                                        mOpen()
                                    }}
-                >privacy terms</span>!
+                >privacy policy</span>!
                 </p>
             </div>
             <Button
