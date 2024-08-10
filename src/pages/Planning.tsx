@@ -129,7 +129,7 @@ function ScheduleDrawer({
             setT("Expense");
             setDate(tmrDate());
             setEndDate(undefined);
-            setAmount(0);
+            setAmount(200);
             setLabel("");
             setType(Object.keys(types[si])[0]);
         }
