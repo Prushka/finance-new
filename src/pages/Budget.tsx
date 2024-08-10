@@ -157,7 +157,7 @@ export default function Budget() {
   const totalMonthlyBudgetSection = (
     <section>
       <div className="flex mb-2 font-semibold justify-between items-center text-lg">
-        <h2>Total Monthly Budget</h2>
+        <h2>Total</h2>
         <NumberFormatter
           value={monthlyTotal}
           prefix="$"
