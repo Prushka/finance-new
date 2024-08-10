@@ -170,9 +170,9 @@ export default function Budget({isDetails}:{isDetails?:boolean}) {
     <section>
       <div className="flex mb-2 justify-between items-center text-sm font-medium">
         <div className={"flex flex-col gap-0.5"}>
-          <p className={"text-sm text-muted-foreground font-normal"}>Left to spend</p>
+          <p className={"text-sm text-muted-foreground font-normal"}>Spent</p>
           <NumberFormatter
-              value={monthlyRemaining}
+              value={monthlySpent}
               prefix="$"
               thousandSeparator
               decimalScale={2}
@@ -191,7 +191,7 @@ export default function Budget({isDetails}:{isDetails?:boolean}) {
 
       </div>
       <div className="flex gap-1 items-center">
-        <Progress.Root size={22} className={"w-full"}>
+        <Progress.Root size={22} radius={"md"} className={"w-full"}>
           <Tooltip label={`Fixed Costs – $${fixedCosts}`}>
             <Progress.Section value={(fixedCosts / monthlyTotal) * 100} color="pink">
               <Progress.Label>Fixed</Progress.Label>
@@ -286,9 +286,10 @@ export default function Budget({isDetails}:{isDetails?:boolean}) {
             </div>
 
             <div className="flex flex-col gap-5 p-5">
-              <div className={"flex flex-col gap-2 justify-center items-center"}>
+              <div className={"flex flex-col gap-1.5 justify-center items-center  mb-4"}>
 
-                <div className={"!cursor-pointer flex gap-0.5 justify-center items-center outline outline-transparent outline-offset-3 rounded-md hover:outline-gray-500 outline-1"}>
+                <div
+                    className={"!cursor-pointer flex gap-0.5 justify-center items-center outline outline-transparent outline-offset-3 rounded-md hover:outline-gray-500 outline-1"}>
                   <MonthPickerInput
                       variant={"unstyled"}
                       value={monthDate}
@@ -306,15 +307,17 @@ export default function Budget({isDetails}:{isDetails?:boolean}) {
                   </MonthPickerInput>
                   <ChevronDown size={14}/>
                 </div>
+
                 <NumberFormatter
-                    className={"text-5xl font-medium mb-4"}
+                    className={"text-5xl font-medium"}
                     value={monthlyRemaining}
                     prefix="$"
                     thousandSeparator
                     decimalScale={2}
                 />
+                <p className={"text-sm text-muted-foreground font-normal"}>Left to spend</p>
               </div>
-            <Card>
+              <Card>
                 <CardHeader className={"flex flex-col justify-center gap-3"}>
                   {totalMonthlyBudgetSection}
                 </CardHeader>

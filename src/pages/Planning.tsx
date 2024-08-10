@@ -275,6 +275,7 @@ function ScheduleDrawer({
                                         duration: 1500,
                                     });
                                 }}
+                                className={"flex items-center justify-center"}
                             >
                                 <Trash className={"mr-3"} size={16}/>DELETE
                             </Button>
@@ -324,7 +325,7 @@ function ScheduleDrawer({
                                     duration: 1500,
                                 });
                             }}
-                            className={!s ? "col-span-2": ""}
+                            className={`${!s ? "col-span-2": ""} flex items-center justify-center`}
                         >
                           <SaveIcon className={"mr-3"} size={16}/>  SAVE
                         </Button>
