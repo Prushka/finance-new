@@ -282,6 +282,17 @@ export default function Budget({isDetails}:{isDetails?:boolean}) {
 
                   <h1 className="text-xl font-bold self-center">Expenses</h1>
                 </div>
+                <Badge
+                    variant="gradient"
+                    className={"font-bold text-xs self-center"}
+                    gradient={{
+                      from: "#a052ab",
+                      to: "#696eff",
+                      deg: 96,
+                    }}
+                >
+                  🎉 5 months on budget!
+                </Badge>
               </div>
             </div>
 
