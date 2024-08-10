@@ -166,13 +166,13 @@ export default function Budget({isDetails}:{isDetails?:boolean}) {
     </div>
   );
 
-  const totalMonthlyBudgetSection = (
-    <section>
+  const totalMonthlyBudgetSection = (useSpent: boolean) => {
+    return <section>
       <div className="flex mb-2 justify-between items-center text-sm font-medium">
         <div className={"flex flex-col gap-0.5"}>
-          <p className={"text-sm text-muted-foreground font-normal"}>Spent</p>
+          <p className={"text-sm text-muted-foreground font-normal"}>{useSpent?"Spent":"Left to spend"}</p>
           <NumberFormatter
-              value={monthlySpent}
+              value={useSpent? monthlySpent:monthlyRemaining}
               prefix="$"
               thousandSeparator
               decimalScale={2}
@@ -205,14 +205,14 @@ export default function Budget({isDetails}:{isDetails?:boolean}) {
           </Tooltip>
 
           <Tooltip label={`Left – $${monthlyRemaining.toFixed(2)}`}>
-            <Progress.Section value={100 - monthlySpentPercentage - (fixedCosts/monthlyTotal)*100} color="gray.2">
+            <Progress.Section value={100 - monthlySpentPercentage - (fixedCosts / monthlyTotal) * 100} color="gray.2">
               <Progress.Label></Progress.Label>
             </Progress.Section>
           </Tooltip>
         </Progress.Root>
       </div>
     </section>
-  );
+  };
 
   const budgetCategoriesSection = (
     <section className="flex flex-col gap-5">
@@ -330,7 +330,7 @@ export default function Budget({isDetails}:{isDetails?:boolean}) {
               </div>
               <Card>
                 <CardHeader className={"flex flex-col justify-center gap-3"}>
-                  {totalMonthlyBudgetSection}
+                  {totalMonthlyBudgetSection(true)}
                 </CardHeader>
               </Card>
               <Card>
@@ -358,7 +358,7 @@ export default function Budget({isDetails}:{isDetails?:boolean}) {
                <ChevronRightIcon/>
              </CardHeader>
              <CardContent>
-               {totalMonthlyBudgetSection}
+               {totalMonthlyBudgetSection(false)}
              </CardContent>
            </Card>
          </Link>
