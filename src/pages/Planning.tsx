@@ -30,7 +30,7 @@ import {
     Select,
     TextInput,
 
-    Badge,
+    Badge, NumberFormatter,
 } from "@mantine/core";
 import {
     Card,
@@ -356,18 +356,7 @@ export default function Planning() {
                 </div>
             </div>
             <div className={"flex flex-col gap-5 p-5"}>
-                <Card>
-                    <CardHeader>
-                            <div className={"flex flex-col"}>
-                                <CardTitle className="mb-2">Dashboard</CardTitle>
-                                <CardDescription>
-                                    View your historical and predicted expenses and income
-                                </CardDescription>
-
-                            </div>
-                    </CardHeader>
-
-                    <CardContent className={"flex flex-col gap-6 justify-center items-center"}>
+                <div className={"flex flex-col gap-6 my-3 justify-center items-center"}>
                         {/*<LineChart*/}
                         {/*    withLegend*/}
                         {/*    h={300}*/}
@@ -390,7 +379,18 @@ export default function Planning() {
                         {/*        `${value < 0 ? "-" : ""}$${Math.abs(value).toFixed(2)}`*/}
                         {/*    }*/}
                         {/*/>*/}
-                        <BarChart
+                    <div className={"flex flex-col gap-1  self-start"}>
+                        <NumberFormatter
+                            className={"text-3xl font-medium"}
+                            value={1700}
+                            prefix="$"
+                            thousandSeparator
+                            decimalScale={2}
+                        />
+                        <CardDescription className={"self-start"}>Net Income</CardDescription>
+
+                    </div>
+                    <BarChart
                             h={300}
                             data={[
                                 { month: 'May', Expense: -1000, Income: 2100, Total: 1100 },
@@ -405,12 +405,10 @@ export default function Planning() {
                                 { name: 'Total', color: 'gray.8' },
                             ]}
                             tickLine="y"
-                            withYAxis={false}
                         />
                         <TabGroup options={options}/>
-                    </CardContent>
-                </Card>
-                <ScheduleCard si={"income"}/>
+                    </div>
+                <ScheduleCard si={"income"} addButton={true}/>
                 <Budget/>
             </div>
         </>
