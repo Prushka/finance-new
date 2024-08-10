@@ -20,6 +20,8 @@ import {
     CalendarIcon,
     RepeatIcon,
     File,
+    SaveIcon,
+    Trash
 } from "lucide-react";
 
 import {
@@ -274,72 +276,74 @@ function ScheduleDrawer({
                         Effective until
                     </DatePicker>}
 
-                    {s && (
+                    <div className={"grid grid-cols-2 gap-4 mt-3"}>
+                        {s && (
+                            <Button
+                                variant={"destructive"}
+                                onClick={() => {
+                                    close();
+                                    setSchedules((prev) => {
+                                        return [...prev.filter((a: Schedule) => a.key !== s.key)];
+                                    });
+                                    toast.success("Schedule deleted!", {
+                                        position: "top-center",
+                                        duration: 1500,
+                                    });
+                                }}
+                            >
+                                <Trash className={"mr-3"} size={16}/>DELETE
+                            </Button>
+                        )}
                         <Button
-                            className={"mt-4"}
-                            variant={"destructive"}
                             onClick={() => {
                                 close();
                                 setSchedules((prev) => {
-                                    return [...prev.filter((a: Schedule) => a.key !== s.key)];
+                                    if (s) {
+                                        return [
+                                            ...prev.map((a: Schedule) => {
+                                                if (a.key === s.key) {
+                                                    return {
+                                                        type,
+                                                        amount,
+                                                        date: formatDate(date),
+                                                        endDate: formatDate(endDate),
+                                                        label: label,
+                                                        si: t.toLowerCase(),
+                                                        key: s.key,
+                                                        account,
+                                                        repeats,
+                                                    };
+                                                }
+                                                return a;
+                                            }),
+                                        ];
+                                    } else {
+                                        return [
+                                            ...prev,
+                                            {
+                                                type,
+                                                amount,
+                                                date: formatDate(date),
+                                                endDate: formatDate(endDate),
+                                                label: label,
+                                                si: t.toLowerCase(),
+                                                key: Math.random().toString(36),
+                                                account,
+                                                repeats,
+                                            },
+                                        ];
+                                    }
                                 });
-                                toast.success("Schedule deleted!", {
+                                toast.success("Schedule added!", {
                                     position: "top-center",
                                     duration: 1500,
                                 });
                             }}
+                            className={!s ? "col-span-2": ""}
                         >
-                            DELETE
+                          <SaveIcon className={"mr-3"} size={16}/>  SAVE
                         </Button>
-                    )}
-                    <Button
-                        onClick={() => {
-                            close();
-                            setSchedules((prev) => {
-                                if (s) {
-                                    return [
-                                        ...prev.map((a: Schedule) => {
-                                            if (a.key === s.key) {
-                                                return {
-                                                    type,
-                                                    amount,
-                                                    date: formatDate(date),
-                                                    endDate: formatDate(endDate),
-                                                    label: label,
-                                                    si: t.toLowerCase(),
-                                                    key: s.key,
-                                                    account,
-                                                    repeats,
-                                                };
-                                            }
-                                            return a;
-                                        }),
-                                    ];
-                                } else {
-                                    return [
-                                        ...prev,
-                                        {
-                                            type,
-                                            amount,
-                                            date: formatDate(date),
-                                            endDate: formatDate(endDate),
-                                            label: label,
-                                            si: t.toLowerCase(),
-                                            key: Math.random().toString(36),
-                                            account,
-                                            repeats,
-                                        },
-                                    ];
-                                }
-                            });
-                            toast.success("Schedule added!", {
-                                position: "top-center",
-                                duration: 1500,
-                            });
-                        }}
-                    >
-                        SAVE
-                    </Button>
+                    </div>
                 </div>
             )}
         </Drawer>
@@ -464,7 +468,7 @@ export default function Planning() {
                                 { month: 'May', Expense: -1000, Income: 2100, Total: 1100 },
                                 { month: 'June', Expense: -750, Income: 900, Total: 1350 },
                                 { month: 'July', Expense: -1800, Income: 600, Total: -1200 },
-                                { month: 'August', Expense: -900, Income: 3500 },
+                                { month: 'August', Expense: -1800, Income: 3500 },
                             ]}
                             dataKey="month"
                             series={[
@@ -513,7 +517,7 @@ export default function Planning() {
                             </div>
                         </div>
                     </CardHeader>
-                    <CardContent className={"flex flex-col px-2"}>
+                    <CardContent className={"flex flex-col px-2 gap-1"}>
                         {schedules
                             .slice()
                             .sort(
@@ -523,7 +527,7 @@ export default function Planning() {
                             .filter((a: Schedule) => a.si === d.toLowerCase())
                             .map((a, index) => (
                                 <ScheduleRow
-                                    className={"border-transparent hover:border-gray-400 rounded-xl border p-3 transition-all"}
+                                    className={"border-transparent hover:border-gray-400 rounded-xl border px-3 py-2 transition-all"}
                                     onClick={() => {
                                         setSelectedSchedule(a);
                                         setViewOnly(false);
@@ -578,7 +582,9 @@ export function ScheduleRow({
             icon={types.expense?.[type] ?? types.income?.[type] ?? <MoreHorizontal/>}
             name={label || type}
             description={`In ${inDays} days (`+date+')'}
-            value={`${prefix}$${amount.toFixed(2)}`}
+            value={
+            <p className={"font-medium"}><span className={"text-gray-600"}>$</span>{amount.toFixed(2)}</p>
+            }
         />
     );
 }

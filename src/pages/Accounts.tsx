@@ -76,7 +76,7 @@ export function TabGroup({
         <Button
           variant={"ghost"}
           key={o}
-          className={`rounded-lg border h-8
+          className={`rounded-lg border h-8 hover:bg-gray-200
          ${selected === o ? "!bg-white border-gray-800" : "border-gray-100"}`}
           onClick={() => setSelected(o)}
         >
@@ -636,7 +636,7 @@ export function Row2({
       className={`flex justify-between items-center ${className}`}
       onClick={onClick}
     >
-      <div className={"flex gap-4"}>
+      <div className={"flex gap-4 justify-center items-center"}>
         <div
           className={
             "w-10 h-10 bg-gray-100 rounded-full flex justify-center items-center text-gray-900"
@@ -645,7 +645,7 @@ export function Row2({
           {icon}
         </div>
         <div className={"flex flex-col h-full justify-center gap-1"}>
-          <p className={"leading-4"}>{name}</p>
+          <p className={"leading-4 font-medium"}>{name}</p>
           <p className={"text-gray-500 text-xs leading-4"}>{description}</p>
         </div>
       </div>
