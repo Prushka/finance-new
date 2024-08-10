@@ -192,15 +192,15 @@ export default function Budget({isDetails}:{isDetails?:boolean}) {
       </div>
       <div className="flex gap-1 items-center">
         <Progress.Root size={22} radius={"md"} className={"w-full"}>
-          <Tooltip label={`Fixed Costs – $${fixedCosts}`}>
+          <Tooltip label={`Fixed Expenses – $${fixedCosts}`}>
             <Progress.Section value={(fixedCosts / monthlyTotal) * 100} color="pink">
-              <Progress.Label>Fixed</Progress.Label>
+              <Progress.Label>Fixed Expenses</Progress.Label>
             </Progress.Section>
           </Tooltip>
 
-          <Tooltip label={`Expenses – $${monthlySpent}`}>
+          <Tooltip label={`Spent Budget – $${monthlySpent}`}>
             <Progress.Section value={monthlySpentPercentage} color="#6A43DD">
-              <Progress.Label>Expenses</Progress.Label>
+              <Progress.Label>Spent</Progress.Label>
             </Progress.Section>
           </Tooltip>
 
@@ -328,7 +328,7 @@ export default function Budget({isDetails}:{isDetails?:boolean}) {
                     thousandSeparator
                     decimalScale={2}
                 />
-                <p className={"text-sm text-muted-foreground font-normal"}>Left to spend</p>
+                <p className={"text-sm text-muted-foreground font-normal"}>Left to Spend</p>
               </div>
               <Card>
                 <CardHeader className={"flex flex-col justify-center gap-3"}>
