@@ -248,7 +248,7 @@ export default function Budget() {
         <CardHeader className={"flex flex-row justify-between gap-2"}>
           <div className={"flex flex-col gap-2"}>
             <CardTitle>Expenses</CardTitle>
-            <CardDescription>Plan your expenses and budgets</CardDescription>
+            <CardDescription>Budget your expenses</CardDescription>
           </div>
           {editButton}
         </CardHeader>
