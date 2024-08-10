@@ -20,7 +20,7 @@ import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/compo
 import {Schedule, ScheduleCard, ScheduleRow} from "@/pages/Planning.tsx";
 import {scheduleState} from "@/states.ts";
 import {useRecoilState} from "recoil";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const currentDate = new Date();
 
@@ -270,15 +270,17 @@ export default function Budget({isDetails}:{isDetails?:boolean}) {
       })}
     </section>
   );
+  const navigate = useNavigate()
 
   return (
       isDetails ? <>
             <div className="z-50 sticky top-0 bg-white p-5 border-b-[1px] border-b-gray-300 flex flex-col gap-6">
               <div className="flex justify-between items-center">
                 <div className={"flex gap-4 items-center justify-center"}>
-                  <Link to={"/planning"}>
-                    <ChevronLeftIcon className="cursor-pointer flex-grow"/>
-                  </Link>
+                    <ChevronLeftIcon className="cursor-pointer flex-grow"
+                    onClick={()=>{
+                      navigate(-1)
+                    }}/>
 
                   <h1 className="text-xl font-bold self-center">Expenses</h1>
                 </div>
