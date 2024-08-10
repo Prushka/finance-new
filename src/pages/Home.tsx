@@ -80,7 +80,7 @@ export default function Home() {
           </Card.Section>
         </HomeCard>
 
-        <HomeCard title="Budget" to="/budget">
+        <HomeCard title="Planning" to="/planning">
           <Card.Section inheritPadding pt="lg" pb="sm">
             <div className="flex mb-2 font-semibold justify-between items-center text-lg">
               <h2>August 2024 Budget</h2>
