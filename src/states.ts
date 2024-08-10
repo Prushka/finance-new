@@ -30,14 +30,6 @@ export const scheduleState: RecoilState<any[]> =
                     repeats: "Month"
                 },
                 {
-                    type: "Groceries",
-                    amount: 200,
-                    date: "2024-08-19",
-                    si: "expense",
-                    key: "2",
-                    repeats: "Never"
-                },
-                {
                     type: "Credit Card",
                     amount: 70,
                     date: "2024-08-20",

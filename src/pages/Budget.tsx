@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, {useMemo, useState} from "react";
 import {
   ActionIcon,
   Divider,
   NumberFormatter,
   NumberInput,
-  Progress,
+  Tooltip,
+  Progress, Badge,
 } from "@mantine/core";
 import { MonthPickerInput } from "@mantine/dates";
 import {
+  ChevronDown,
   ChevronLeftIcon,
   ChevronRightIcon,
   PencilIcon,
@@ -15,10 +17,14 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
+import {Schedule, ScheduleCard, ScheduleRow} from "@/pages/Planning.tsx";
+import {scheduleState} from "@/states.ts";
+import {useRecoilState} from "recoil";
+import {Link} from "react-router-dom";
 
 const currentDate = new Date();
 
-export default function Budget() {
+export default function Budget({isDetails}:{isDetails?:boolean}) {
   const [monthDate, setMonthDate] = useState<Date>(currentDate);
   const isCurrentMonth =
     monthDate.getMonth() === currentDate.getMonth() &&
@@ -66,18 +72,25 @@ export default function Budget() {
       name: "Bills",
       spent: 182.33,
     },
-    {
-      name: "Health",
-      total: 200,
-      spent: 50,
-    },
   ];
 
-  const monthlyTotal = budgetAmountForm.reduce((a, b) => a + b, 0);
-  const monthlySpent = budgetCategories
-    .map(({ spent }) => spent)
-    .reduce((a, b) => a + b, 0);
-  const monthlyRemaining = monthlyTotal - monthlySpent;
+  const [schedules] = useRecoilState(scheduleState);
+  const fixedCosts = useMemo(() => {
+    return schedules.filter((schedule: Schedule) => schedule.si === "expense").reduce((acc: number, schedule: Schedule) => {
+        return acc + schedule.amount;
+    }, 0);
+  }, [schedules]);
+  const monthlyTotal = useMemo(()=>{
+    return budgetAmountForm.reduce((a, b) => a + b, 0) + fixedCosts
+  }, [budgetAmountForm, fixedCosts]);
+  const monthlySpent = useMemo(()=>{
+    return budgetCategories
+        .map(({ spent }) => spent)
+        .reduce((a, b) => a + b, 0)
+  }, [budgetCategories]);
+  const monthlyRemaining = useMemo(()=>{
+    return monthlyTotal - monthlySpent - fixedCosts;
+  }, [monthlyTotal, monthlySpent, fixedCosts]);
 
   const monthlySpentPercentage = (monthlySpent / monthlyTotal) * 100;
 
@@ -155,32 +168,48 @@ export default function Budget() {
 
   const totalMonthlyBudgetSection = (
     <section>
-      <div className="flex mb-2 font-semibold justify-between items-center text-lg">
-        <h2>Total</h2>
-        <NumberFormatter
-          value={monthlyTotal}
-          prefix="$"
-          thousandSeparator
-          decimalScale={2}
-        />
+      <div className="flex mb-2 justify-between items-center text-sm font-medium">
+        <div className={"flex flex-col gap-0.5"}>
+          <p className={"text-sm text-muted-foreground font-normal"}>Left to spend</p>
+          <NumberFormatter
+              value={monthlyRemaining}
+              prefix="$"
+              thousandSeparator
+              decimalScale={2}
+          />
+        </div>
+
+        <div className={"flex flex-col gap-0.5 mr-4"}>
+          <p className={"text-sm text-muted-foreground font-normal"}>Monthly Budget</p>
+          <NumberFormatter
+              value={monthlyTotal}
+              prefix="$"
+              thousandSeparator
+              decimalScale={2}
+          />
+        </div>
+
       </div>
       <div className="flex gap-1 items-center">
-        <Progress
-          size="lg"
-          radius="xl"
-          value={monthlySpentPercentage}
-          className="w-full"
-          color="#6A43DD"
-        />
-        <p className="text-sm text-gray-500 text-right w-[125px]">
-          <NumberFormatter
-            value={monthlyRemaining}
-            prefix="$"
-            thousandSeparator
-            decimalScale={2}
-          />{" "}
-          left
-        </p>
+        <Progress.Root size={22} className={"w-full"}>
+          <Tooltip label={`Fixed Costs – $${fixedCosts}`}>
+            <Progress.Section value={(fixedCosts / monthlyTotal) * 100} color="pink">
+              <Progress.Label>Fixed</Progress.Label>
+            </Progress.Section>
+          </Tooltip>
+
+          <Tooltip label={`Expenses – $${monthlySpent}`}>
+            <Progress.Section value={monthlySpentPercentage} color="#6A43DD">
+              <Progress.Label>Expenses</Progress.Label>
+            </Progress.Section>
+          </Tooltip>
+
+          <Tooltip label={`Left – $${monthlyRemaining.toFixed(2)}`}>
+            <Progress.Section value={100 - monthlySpentPercentage - (fixedCosts/monthlyTotal)*100} color="gray.2">
+              <Progress.Label></Progress.Label>
+            </Progress.Section>
+          </Tooltip>
+        </Progress.Root>
       </div>
     </section>
   );
@@ -243,23 +272,81 @@ export default function Budget() {
   );
 
   return (
-      <Card>
-        <CardHeader className={"flex flex-row justify-between gap-2"}>
-          <div className={"flex flex-col gap-2"}>
-            <CardTitle>Expenses</CardTitle>
-            <CardDescription>Budget your expenses</CardDescription>
-          </div>
-          {editButton}
-        </CardHeader>
-        <CardContent className={"flex flex-col justify-center gap-3"}>
+      isDetails ? <>
+            <div className="z-50 sticky top-0 bg-white p-5 border-b-[1px] border-b-gray-300 flex flex-col gap-6">
+              <div className="flex justify-between items-center">
+                <div className={"flex gap-4 items-center justify-center"}>
+                  <Link to={"/planning"}>
+                    <ChevronLeftIcon className="cursor-pointer flex-grow"/>
+                  </Link>
 
-        {monthPicker}
-          <div className="flex flex-col gap-4">
-            {totalMonthlyBudgetSection}
-            <Divider label="Budget Categories" />
-            {budgetCategoriesSection}
-          </div>
-        </CardContent>
-      </Card>
+                  <h1 className="text-xl font-bold self-center">Expenses</h1>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-5 p-5">
+              <div className={"flex flex-col gap-2 justify-center items-center"}>
+
+                <div className={"!cursor-pointer flex gap-0.5 justify-center items-center outline outline-transparent outline-offset-3 rounded-md hover:outline-gray-500 outline-1"}>
+                  <MonthPickerInput
+                      variant={"unstyled"}
+                      value={monthDate}
+                      onChange={(date) => setMonthDate(date!)}
+                      maxDate={currentDate}
+                      popoverProps={{
+                        position: "bottom",
+                      }}
+                      styles={{
+                        input: {
+                          fontWeight: 500,
+                        },
+                      }}
+                  >
+                  </MonthPickerInput>
+                  <ChevronDown size={14}/>
+                </div>
+                <NumberFormatter
+                    className={"text-5xl font-medium mb-4"}
+                    value={monthlyRemaining}
+                    prefix="$"
+                    thousandSeparator
+                    decimalScale={2}
+                />
+              </div>
+            <Card>
+                <CardHeader className={"flex flex-col justify-center gap-3"}>
+                  {totalMonthlyBudgetSection}
+                </CardHeader>
+              </Card>
+              <Card>
+                <CardHeader className={"flex flex-row justify-between gap-2 items-center"}>
+                  <div className={"flex flex-col gap-2"}>
+                    <CardTitle>Budget Categories</CardTitle>
+                    <CardDescription>Manage your budgets</CardDescription>
+                  </div>
+                  {editButton}
+                </CardHeader>
+                <CardContent>
+                  {budgetCategoriesSection}
+                </CardContent>
+              </Card>
+              <ScheduleCard si={"expense"} addButton={isCurrentMonth}/>
+            </div>
+          </> :
+         <Link to={"/budget"}>
+           <Card className={"hoverable-card"}>
+             <CardHeader className={"flex flex-row justify-between gap-2"}>
+               <div className={"flex flex-col gap-2"}>
+                 <CardTitle>Expenses</CardTitle>
+                 <CardDescription>Budget your expenses</CardDescription>
+               </div>
+               <ChevronRightIcon/>
+             </CardHeader>
+             <CardContent>
+               {totalMonthlyBudgetSection}
+             </CardContent>
+           </Card>
+         </Link>
   );
 }

@@ -108,5 +108,5 @@ div[data-radix-popper-content-wrapper]{
 
 
 .hoverable-card {
-  @apply hover:shadow-md cursor-pointer transition-all;
+  @apply hover:shadow-md cursor-pointer transition-all outline outline-transparent hover:outline-gray-500 outline-1 ;
 }

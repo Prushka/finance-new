@@ -161,7 +161,7 @@ export function AccountDetails({ bank }: { bank: Bank }) {
 
           <Card
               onClick={() => {
-                  navigate("/planning");
+                  navigate("/budget");
               }}
               className={"hoverable-card"}
           >
@@ -421,7 +421,7 @@ export function AddAccount() {
     return (
         <>
             <div className="z-50 sticky top-0 bg-white p-5 border-b-[1px] border-b-gray-300 flex flex-col gap-6">
-                <div className="flex justify-between items-center w-full">
+                <div className="flex gap-4 items-center w-full">
                     <Link to={"/accounts"}>
                         <ArrowLeftIcon/>
                     </Link>

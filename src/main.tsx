@@ -41,7 +41,7 @@ const router = createHashRouter([
       },
       {
         path: "budget",
-        element: <Budget />,
+        element: <Budget isDetails={true} />,
       },
       {
         path: "transactions",

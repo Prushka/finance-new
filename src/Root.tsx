@@ -24,7 +24,7 @@ const NAV_BUTTONS = [
     icon: <WalletCardsIcon />,
     includes: ["accounts-add"],
   },
-  { label: "Planning", to: "/planning", icon: <ChartLineIcon /> },
+  { label: "Planning", to: "/planning", icon: <ChartLineIcon />, includes: ["budget"] },
 ];
 
 function getWindowDimensions() {

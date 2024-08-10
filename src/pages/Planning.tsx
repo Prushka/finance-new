@@ -64,14 +64,9 @@ const size = 18;
 const types: any = {
     expense: {
         Rent: <Home size={size}/>,
-        Groceries: <ShoppingCart size={size}/>,
         "Credit Card": <CreditCard size={size}/>,
         Utilities: <PenTool size={size}/>,
         Insurance: <Shield size={size}/>,
-        Transportation: <Truck size={size}/>,
-        Healthcare: <Heart size={size}/>,
-        Entertainment: <Film size={size}/>,
-        Education: <Book size={size}/>,
         Other: <MoreHorizontal size={size}/>,
     },
     income: {
@@ -100,19 +95,21 @@ function ScheduleDrawer({
                             close,
                             s,
                             viewOnly,
+    si
                         }: {
     opened: boolean;
     close: () => void;
     title?: string;
     s?: Schedule;
     viewOnly?: boolean;
+    si: string
 }) {
-    const [t, setT] = useState("Income");
+    const [t, setT] = useState(upperFirst(si));
     const [date, setDate] = useState<Date>(tmrDate());
     const [endDate, setEndDate] = useState<Date | undefined>(undefined);
     const [amount, setAmount] = useState(0);
     const [label, setLabel] = useState("");
-    const [type, setType] = useState(Object.keys(types.income)[0]);
+    const [type, setType] = useState(Object.keys(types[si])[0]);
     const [, setSchedules] = useRecoilState(scheduleState);
     const [account, setAccount] = useState<string | undefined | null>("");
     const [repeats, setRepeats] = useState<string>("Never");
@@ -134,7 +131,7 @@ function ScheduleDrawer({
             setEndDate(undefined);
             setAmount(0);
             setLabel("");
-            setType(Object.keys(types.income)[0]);
+            setType(Object.keys(types[si])[0]);
         }
     }, [s]);
 
@@ -152,8 +149,8 @@ function ScheduleDrawer({
                     : viewOnly
                         ? "Schedule"
                         : s
-                            ? "Edit schedule"
-                            : "Add a schedule"
+                            ? `Edit ${si} schedule`
+                            : `Add an ${si} schedule`
             }
         >
             {s?.auto || viewOnly ? (
@@ -208,20 +205,6 @@ function ScheduleDrawer({
                 </div>
             ) : (
                 <div className={"flex flex-col gap-4"}>
-                    {/*<div className={"text-sm font-medium"}>*/}
-                    {/*    In or Out?<Required/>*/}
-                    {/*</div>*/}
-                    {/*<RadioGroup defaultValue={t} onValueChange={setT} orientation={"horizontal"}*/}
-                    {/*            className={"grid-flow-col max-w-48"}>*/}
-                    {/*    <div className="flex items-center space-x-2">*/}
-                    {/*        <RadioGroupItem value="Expense" id="r1"/>*/}
-                    {/*        <Label htmlFor="r1">Expense</Label>*/}
-                    {/*    </div>*/}
-                    {/*    <div className="flex items-center space-x-2">*/}
-                    {/*        <RadioGroupItem value="Income" id="r2"/>*/}
-                    {/*        <Label htmlFor="r2">Income</Label>*/}
-                    {/*    </div>*/}
-                    {/*</RadioGroup>*/}
                     <Autocomplete
                         label={
                             <span>
@@ -229,7 +212,7 @@ function ScheduleDrawer({
               </span>
                         }
                         placeholder="Enter or choose a type"
-                        data={Object.keys(types.income)}
+                        data={Object.keys(types[si])}
                         value={type}
                         onChange={setType}
                     />
@@ -361,61 +344,9 @@ function formatDate(date: Date | undefined) {
     return `${year}-${month}-${day}`;
 }
 
-function dataFromSchedules(schedules: Schedule[]): any[] {
-    // export const data = [
-    //     {
-    //         date: 'Mar 22',
-    //         Income: 2890,
-    //         Expense: 2338,
-    //     },
-    const base = 829.34;
-    const today = new Date().toLocaleString("en-US", {
-        month: "short",
-        day: "numeric",
-    });
-    const data: any = {
-        today: {
-            date: today,
-            income: 0,
-            expense: 0,
-            total: base,
-        },
-    };
-    schedules.forEach((a: Schedule) => {
-        const d = new Date(a.date).toLocaleString("en-US", {
-            month: "short",
-            day: "numeric",
-        });
-        if (!data[d]) {
-            data[d] = {
-                date: d,
-                income: 0,
-                expense: 0,
-                total: 0,
-            };
-        }
-        if (a.si === "income") {
-            data[d].income += a.amount;
-        } else {
-            data[d].expense += a.amount;
-        }
-        data[d].total = data[d].income - data[d].expense + base;
-    });
-    const keys = Object.keys(data).sort((a, b) => {
-        return new Date(a).getTime() - new Date(b).getTime();
-    })
-    return keys.map((key) => data[key]);
-}
+
 
 export default function Planning() {
-    const [t, setT] = useState("Calendar");
-    const [d, setD] = useState("Income");
-    const [opened, {open, close}] = useDisclosure(false);
-    const [schedules] = useRecoilState(scheduleState);
-    const [selectedSchedule, setSelectedSchedule] = useState<
-        Schedule | undefined
-    >(undefined);
-    const [viewOnly, setViewOnly] = useState(false);
     return (
         <>
             <div className="z-50 sticky top-0 bg-white p-5 border-b-[1px] border-b-gray-300 flex flex-col gap-6">
@@ -435,12 +366,6 @@ export default function Planning() {
                 </div>
             </div>
             <div className={"flex flex-col gap-5 p-5"}>
-                <ScheduleDrawer
-                    opened={opened}
-                    close={close}
-                    s={selectedSchedule}
-                    viewOnly={viewOnly}
-                />
                 <Card>
                     <CardHeader>
                             <div className={"flex flex-col"}>
@@ -494,69 +419,81 @@ export default function Planning() {
                         />
                         <TabGroup options={options}/>
                     </CardContent>
-                    {t === "Chart" && (
-                        <CardFooter className={"flex justify-center items-center"}>
-                            <TabGroup
-                                className={"max-w-80"}
-                                options={["Week", "Month", "Year"]}
-                            />
-                        </CardFooter>
-                    )}
                 </Card>
-
-                <Card>
-                    <CardHeader>
-                        <div className={"flex items-center"}>
-                            {/*<CardTitle className={"flex-1"}>Schedules</CardTitle>*/}
-                            <div className={"flex flex-col gap-2"}>
-                                <CardTitle>Income</CardTitle>
-                                <CardDescription>Plan your income schedules</CardDescription>
-
-                            </div>
-                            <div className={"flex-1 flex justify-end"}>
-
-                            <Button
-                                onClick={() => {
-                                    setSelectedSchedule(undefined);
-                                    setViewOnly(false);
-                                    open();
-                                }}
-                                variant={"default"}
-                                className={"flex gap-2 w-24"}
-                            >
-                                <PlusIcon/>
-                                Add
-                            </Button>
-                            </div>
-                        </div>
-                    </CardHeader>
-                    <CardContent className={"flex flex-col px-2 gap-1"}>
-                        {schedules
-                            .slice()
-                            .sort(
-                                (a: Schedule, b: Schedule) =>
-                                    new Date(a.date).getTime() - new Date(b.date).getTime()
-                            )
-                            .filter((a: Schedule) => a.si === d.toLowerCase())
-                            .map((a, index) => (
-                                <ScheduleRow
-                                    className={"border-transparent hover:border-gray-400 rounded-xl border px-3 py-2 transition-all"}
-                                    onClick={() => {
-                                        setSelectedSchedule(a);
-                                        setViewOnly(false);
-                                        open();
-                                    }}
-                                    key={index}
-                                    schedule={a}
-                                    prefix={d === "Expense" ? "-" : ""}
-                                />
-                            ))}
-                    </CardContent>
-                </Card>
+                <ScheduleCard si={"income"}/>
                 <Budget/>
             </div>
         </>
     );
+}
+
+export function ScheduleCard({si, addButton=true}:{si:string, addButton:boolean}) {
+    const [d, ] = useState(upperFirst(si));
+    const [opened, {open, close}] = useDisclosure(false);
+    const [schedules] = useRecoilState(scheduleState);
+    const [selectedSchedule, setSelectedSchedule] = useState<
+        Schedule | undefined
+    >(undefined);
+    const [viewOnly, setViewOnly] = useState(false);
+
+    return <>
+    <ScheduleDrawer
+        si={si}
+        opened={opened}
+        close={close}
+        s={selectedSchedule}
+        viewOnly={viewOnly}
+    /><Card>
+        <CardHeader>
+            <div className={"flex items-center"}>
+                {/*<CardTitle className={"flex-1"}>Schedules</CardTitle>*/}
+                <div className={"flex flex-col gap-2"}>
+                    <CardTitle>{d}</CardTitle>
+                    <CardDescription>Plan your {si} schedules</CardDescription>
+
+                </div>
+                {addButton &&
+                <div className={"flex-1 flex justify-end"}>
+
+                    <Button
+                        onClick={() => {
+                            setSelectedSchedule(undefined);
+                            setViewOnly(false);
+                            open();
+                        }}
+                        variant={"default"}
+                        className={"flex gap-2 w-24"}
+                    >
+                        <PlusIcon/>
+                        Add
+                    </Button>
+                </div>
+                }
+            </div>
+        </CardHeader>
+        <CardContent className={"flex flex-col gap-5"}>
+            {schedules
+                .slice()
+                .sort(
+                    (a: Schedule, b: Schedule) =>
+                        new Date(a.date).getTime() - new Date(b.date).getTime()
+                )
+                .filter((a: Schedule) => a.si === d.toLowerCase())
+                .map((a, index) => (
+                    <ScheduleRow
+                        className={"outline-transparent outline outline-offset-8 hover:outline-gray-400 rounded-md outline-1 transition-all"}
+                        onClick={() => {
+                            setSelectedSchedule(a);
+                            setViewOnly(false);
+                            open();
+                        }}
+                        key={index}
+                        schedule={a}
+                        prefix={d === "Expense" ? "-" : ""}
+                    />
+                ))}
+        </CardContent>
+    </Card></>
 }
 
 export interface Schedule {
@@ -594,10 +531,14 @@ export function ScheduleRow({
             onClick={onClick}
             icon={types.expense?.[type] ?? types.income?.[type] ?? <MoreHorizontal/>}
             name={label || type}
-            description={`In ${inDays} days (`+date+')'}
+            description={<p><span className={"text-gray-900 font-medium"}>In {inDays} days</span> ({date})</p>}
             value={
-            <p className={"font-medium"}><span className={"text-gray-600"}>$</span>{amount.toFixed(2)}</p>
+            <p className={"font-medium"}><span className={"text-gray-600"}>{prefix}$</span>{formatCurrencyWithSeparator(amount)}</p>
             }
         />
     );
+}
+
+function formatCurrencyWithSeparator(value: number) {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
