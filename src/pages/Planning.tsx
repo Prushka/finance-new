@@ -107,7 +107,7 @@ function ScheduleDrawer({
     const [t, setT] = useState(upperFirst(si));
     const [date, setDate] = useState<Date>(tmrDate());
     const [endDate, setEndDate] = useState<Date | undefined>(undefined);
-    const [amount, setAmount] = useState(0);
+    const [amount, setAmount] = useState(200);
     const [label, setLabel] = useState("");
     const [type, setType] = useState(Object.keys(types[si])[0]);
     const [, setSchedules] = useRecoilState(scheduleState);
