@@ -125,7 +125,7 @@ export default function Transactions() {
             <p className="text-sm text-gray-500">Account</p>
             <div className="flex flex-col text-right">
               <p>{transaction.account}</p>
-              <Link to="/accounts" className="underline">
+              <Link to={`/accounts/${transaction.account.includes("TD")? "td":'rbc'}`} className="underline">
                 View account
               </Link>
             </div>

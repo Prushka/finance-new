@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   ActionIcon,
-  Badge,
   Divider,
   NumberFormatter,
   NumberInput,
@@ -260,17 +259,6 @@ export default function Budget() {
             <Divider label="Budget Categories" />
             {budgetCategoriesSection}
           </div>
-          <Badge
-              variant="gradient"
-              className={"font-bold text-xs self-center mt-4"}
-              gradient={{
-                from: "#a052ab",
-                to: "#696eff",
-                deg: 96,
-              }}
-          >
-            🎉 5 months on budget!
-          </Badge>
         </CardContent>
       </Card>
   );

@@ -29,6 +29,8 @@ import {
     NumberInput,
     Select,
     TextInput,
+
+    Badge,
 } from "@mantine/core";
 import {
     Card,
@@ -419,6 +421,17 @@ export default function Planning() {
             <div className="z-50 sticky top-0 bg-white p-5 border-b-[1px] border-b-gray-300 flex flex-col gap-6">
                 <div className="flex justify-between items-center w-full">
                     <h1 className="text-xl font-bold self-center">Planning</h1>
+                    <Badge
+                        variant="gradient"
+                        className={"font-bold text-xs self-center"}
+                        gradient={{
+                            from: "#a052ab",
+                            to: "#696eff",
+                            deg: 96,
+                        }}
+                    >
+                        🎉 5 months on budget!
+                    </Badge>
                 </div>
             </div>
             <div className={"flex flex-col gap-5 p-5"}>
