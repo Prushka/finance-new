@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   ActionIcon,
   Badge,
@@ -15,6 +15,7 @@ import {
   SaveIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 
 const currentDate = new Date();
 
@@ -97,7 +98,7 @@ export default function Budget() {
         </Button>
       )}
       <Button
-        className={"w-36"}
+        className={"w-24"}
         onClick={() => {
           setIsEditing((prev) => !prev);
           if (isEditing) {
@@ -107,11 +108,11 @@ export default function Budget() {
       >
         {!isEditing ? (
           <>
-            <PencilIcon className="size-4 mr-2" /> Edit budget
+            <PencilIcon className="size-4 mr-2" /> Edit
           </>
         ) : (
           <>
-            <SaveIcon className="size-4 mr-2" /> Save budget
+            <SaveIcon className="size-4 mr-2" /> Save
           </>
         )}
       </Button>
@@ -243,33 +244,34 @@ export default function Budget() {
   );
 
   return (
-    <div>
-      <div className="z-50 sticky top-0 bg-white p-5 border-b-[1px] border-b-gray-300 flex flex-col gap-4">
-        <div className="flex justify-between items-center gap-2">
-          <h1 className="text-xl font-bold">Budget</h1>
+      <Card>
+        <CardHeader className={"flex flex-row justify-between gap-2"}>
+          <div className={"flex flex-col gap-2"}>
+            <CardTitle>Expenses</CardTitle>
+            <CardDescription>Plan your expenses and budgets</CardDescription>
+          </div>
+          {editButton}
+        </CardHeader>
+        <CardContent className={"flex flex-col justify-center gap-3"}>
+
+        {monthPicker}
+          <div className="flex flex-col gap-4">
+            {totalMonthlyBudgetSection}
+            <Divider label="Budget Categories" />
+            {budgetCategoriesSection}
+          </div>
           <Badge
-            variant="gradient"
-            className={"font-bold text-xs"}
-            gradient={{
-              from: "#a052ab",
-              to: "#696eff",
-              deg: 96,
-            }}
+              variant="gradient"
+              className={"font-bold text-xs self-center mt-4"}
+              gradient={{
+                from: "#a052ab",
+                to: "#696eff",
+                deg: 96,
+              }}
           >
             🎉 5 months on budget!
           </Badge>
-        </div>
-        {monthPicker}
-      </div>
-
-      <section className="p-5">
-        <div className="flex flex-row-reverse mb-4">{editButton}</div>
-        <div className="flex flex-col gap-4">
-          {totalMonthlyBudgetSection}
-          <Divider label="Budget Categories" />
-          {budgetCategoriesSection}
-        </div>
-      </section>
-    </div>
+        </CardContent>
+      </Card>
   );
 }

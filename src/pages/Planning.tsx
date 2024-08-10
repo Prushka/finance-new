@@ -36,7 +36,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import {Row, Row2, TabGroup, TabGroup2} from "@/pages/Accounts.tsx";
+import {options, Row, Row2, TabGroup, TabGroup2} from "@/pages/Accounts.tsx";
 import React, {useEffect, useState} from "react";
 import {Drawer} from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
@@ -46,9 +46,10 @@ import {useRecoilState} from "recoil";
 import {scheduleState} from "@/states.ts";
 import {toast} from "sonner";
 import {useNavigate} from "react-router-dom";
-import {LineChart} from "@mantine/charts";
+import {BarChart, LineChart} from "@mantine/charts";
 import {Label} from "@/components/ui/label.tsx";
 import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group.tsx";
+import Budget from "@/pages/Budget.tsx";
 
 function Required() {
     return <span className={"leading-4 text-sm text-red-500"}>*</span>;
@@ -102,12 +103,12 @@ function ScheduleDrawer({
     s?: Schedule;
     viewOnly?: boolean;
 }) {
-    const [t, setT] = useState("Expense");
+    const [t, setT] = useState("Income");
     const [date, setDate] = useState<Date>(tmrDate());
     const [endDate, setEndDate] = useState<Date | undefined>(undefined);
     const [amount, setAmount] = useState(0);
     const [label, setLabel] = useState("");
-    const [type, setType] = useState(Object.keys(types.expense)[0]);
+    const [type, setType] = useState(Object.keys(types.income)[0]);
     const [, setSchedules] = useRecoilState(scheduleState);
     const [account, setAccount] = useState<string | undefined | null>("");
     const [repeats, setRepeats] = useState<string>("Never");
@@ -129,7 +130,7 @@ function ScheduleDrawer({
             setEndDate(undefined);
             setAmount(0);
             setLabel("");
-            setType(Object.keys(types.expense)[0]);
+            setType(Object.keys(types.income)[0]);
         }
     }, [s]);
 
@@ -203,20 +204,20 @@ function ScheduleDrawer({
                 </div>
             ) : (
                 <div className={"flex flex-col gap-4"}>
-                    <div className={"text-sm font-medium"}>
-                        In or Out?<Required/>
-                    </div>
-                    <RadioGroup defaultValue={t} onValueChange={setT} orientation={"horizontal"}
-                                className={"grid-flow-col max-w-48"}>
-                        <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="Expense" id="r1"/>
-                            <Label htmlFor="r1">Expense</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="Income" id="r2"/>
-                            <Label htmlFor="r2">Income</Label>
-                        </div>
-                    </RadioGroup>
+                    {/*<div className={"text-sm font-medium"}>*/}
+                    {/*    In or Out?<Required/>*/}
+                    {/*</div>*/}
+                    {/*<RadioGroup defaultValue={t} onValueChange={setT} orientation={"horizontal"}*/}
+                    {/*            className={"grid-flow-col max-w-48"}>*/}
+                    {/*    <div className="flex items-center space-x-2">*/}
+                    {/*        <RadioGroupItem value="Expense" id="r1"/>*/}
+                    {/*        <Label htmlFor="r1">Expense</Label>*/}
+                    {/*    </div>*/}
+                    {/*    <div className="flex items-center space-x-2">*/}
+                    {/*        <RadioGroupItem value="Income" id="r2"/>*/}
+                    {/*        <Label htmlFor="r2">Income</Label>*/}
+                    {/*    </div>*/}
+                    {/*</RadioGroup>*/}
                     <Autocomplete
                         label={
                             <span>
@@ -224,7 +225,7 @@ function ScheduleDrawer({
               </span>
                         }
                         placeholder="Enter or choose a type"
-                        data={Object.keys(types[t.toLowerCase()])}
+                        data={Object.keys(types.income)}
                         value={type}
                         onChange={setType}
                     />
@@ -245,13 +246,7 @@ function ScheduleDrawer({
                         }
                     />
                     <DatePicker date={date} setDate={setDate}>
-                        Schedule starts at <Required/>
-                    </DatePicker>
-                    <DatePicker
-                        date={endDate}
-                        setDate={setEndDate}
-                    >
-                        Schedule ends at
+                        Effective from <Required/>
                     </DatePicker>
 
 
@@ -272,6 +267,12 @@ function ScheduleDrawer({
                         onChange={setRepeats}
                     />
 
+                    {repeats !== "Never" && <DatePicker
+                        date={endDate}
+                        setDate={setEndDate}
+                    >
+                        Effective until
+                    </DatePicker>}
 
                     {s && (
                         <Button
@@ -402,7 +403,7 @@ function dataFromSchedules(schedules: Schedule[]): any[] {
 
 export default function Planning() {
     const [t, setT] = useState("Calendar");
-    const [d, setD] = useState("Expense");
+    const [d, setD] = useState("Income");
     const [opened, {open, close}] = useDisclosure(false);
     const [schedules] = useRecoilState(scheduleState);
     const [selectedSchedule, setSelectedSchedule] = useState<
@@ -413,7 +414,7 @@ export default function Planning() {
         <>
             <div className="z-50 sticky top-0 bg-white p-5 border-b-[1px] border-b-gray-300 flex flex-col gap-6">
                 <div className="flex justify-between items-center w-full">
-                    <h1 className="text-xl font-bold self-center">Schedules</h1>
+                    <h1 className="text-xl font-bold self-center">Planning</h1>
                 </div>
             </div>
             <div className={"flex flex-col gap-5 p-5"}>
@@ -426,37 +427,55 @@ export default function Planning() {
                 <Card>
                     <CardHeader>
                             <div className={"flex flex-col"}>
-                                <CardTitle className="mb-2">Forecast</CardTitle>
+                                <CardTitle className="mb-2">Dashboard</CardTitle>
                                 <CardDescription>
-                                    View your predicted available funds based on upcoming income
-                                    and expense schedules.
+                                    View your historical and predicted expenses and income
                                 </CardDescription>
+
                             </div>
                     </CardHeader>
 
-                    <CardContent className={"flex justify-center items-center"}>
-                        <LineChart
-                            withLegend
+                    <CardContent className={"flex flex-col gap-6 justify-center items-center"}>
+                        {/*<LineChart*/}
+                        {/*    withLegend*/}
+                        {/*    h={300}*/}
+                        {/*    className={"w-full"}*/}
+                        {/*    data={dataFromSchedules(schedules)}*/}
+                        {/*    series={[{name: "total", label: "Total"}]}*/}
+                        {/*    dataKey="date"*/}
+                        {/*    type="gradient"*/}
+                        {/*    gradientStops={[*/}
+                        {/*        {offset: 0, color: "blue.5"},*/}
+                        {/*        {offset: 20, color: "cyan.6"},*/}
+                        {/*        {offset: 40, color: "lime.5"},*/}
+                        {/*        {offset: 70, color: "yellow.5"},*/}
+                        {/*        {offset: 80, color: "orange.5"},*/}
+                        {/*        {offset: 100, color: "red.6"},*/}
+                        {/*    ]}*/}
+                        {/*    strokeWidth={5}*/}
+                        {/*    curveType="natural"*/}
+                        {/*    valueFormatter={(value) =>*/}
+                        {/*        `${value < 0 ? "-" : ""}$${Math.abs(value).toFixed(2)}`*/}
+                        {/*    }*/}
+                        {/*/>*/}
+                        <BarChart
                             h={300}
-                            className={"w-full"}
-                            data={dataFromSchedules(schedules)}
-                            series={[{name: "total", label: "Total"}]}
-                            dataKey="date"
-                            type="gradient"
-                            gradientStops={[
-                                {offset: 0, color: "blue.5"},
-                                {offset: 20, color: "cyan.6"},
-                                {offset: 40, color: "lime.5"},
-                                {offset: 70, color: "yellow.5"},
-                                {offset: 80, color: "orange.5"},
-                                {offset: 100, color: "red.6"},
+                            data={[
+                                { month: 'May', Expense: -1000, Income: 2100, Total: 1100 },
+                                { month: 'June', Expense: -750, Income: 900, Total: 1350 },
+                                { month: 'July', Expense: -1800, Income: 600, Total: -1200 },
+                                { month: 'August', Expense: -900, Income: 3500 },
                             ]}
-                            strokeWidth={5}
-                            curveType="natural"
-                            valueFormatter={(value) =>
-                                `${value < 0 ? "-" : ""}$${Math.abs(value).toFixed(2)}`
-                            }
+                            dataKey="month"
+                            series={[
+                                { name: 'Expense', color: 'red.5' },
+                                { name: 'Income', color: 'green.5' },
+                                { name: 'Total', color: 'gray.8' },
+                            ]}
+                            tickLine="y"
+                            withYAxis={false}
                         />
+                        <TabGroup options={options}/>
                     </CardContent>
                     {t === "Chart" && (
                         <CardFooter className={"flex justify-center items-center"}>
@@ -472,11 +491,11 @@ export default function Planning() {
                     <CardHeader>
                         <div className={"flex items-center"}>
                             {/*<CardTitle className={"flex-1"}>Schedules</CardTitle>*/}
-                            <TabGroup2
-                                selected={d}
-                                setSelected={setD}
-                                options={["Expense", "Income"]}
-                            />
+                            <div className={"flex flex-col gap-2"}>
+                                <CardTitle>Income</CardTitle>
+                                <CardDescription>Plan your income schedules</CardDescription>
+
+                            </div>
                             <div className={"flex-1 flex justify-end"}>
 
                             <Button
@@ -485,10 +504,11 @@ export default function Planning() {
                                     setViewOnly(false);
                                     open();
                                 }}
-                                variant={"secondary"}
-                                className={"flex gap-2"}
+                                variant={"default"}
+                                className={"flex gap-2 w-24"}
                             >
-                                Add Schedule
+                                <PlusIcon/>
+                                Add
                             </Button>
                             </div>
                         </div>
@@ -516,6 +536,7 @@ export default function Planning() {
                             ))}
                     </CardContent>
                 </Card>
+                <Budget/>
             </div>
         </>
     );
@@ -556,7 +577,7 @@ export function ScheduleRow({
             onClick={onClick}
             icon={types.expense?.[type] ?? types.income?.[type] ?? <MoreHorizontal/>}
             name={label || type}
-            description={date + ` (In ${inDays} days)`}
+            description={`In ${inDays} days (`+date+')'}
             value={`${prefix}$${amount.toFixed(2)}`}
         />
     );

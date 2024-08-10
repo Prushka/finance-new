@@ -25,7 +25,6 @@ const NAV_BUTTONS = [
     includes: ["accounts-add"],
   },
   { label: "Planning", to: "/planning", icon: <ChartLineIcon /> },
-  { label: "Budget", to: "/budget", icon: <PiggyBankIcon /> },
 ];
 
 function getWindowDimensions() {
@@ -71,7 +70,7 @@ export default function Root() {
         <Outlet />
       </AppShell.Main>
       <AppShell.Footer>
-        <nav className="h-full max-w-[600px] mx-auto grid grid-cols-5">
+        <nav className="h-full max-w-[600px] mx-auto grid grid-cols-4">
           {NAV_BUTTONS.map(({ label, to, icon, includes }) => (
             <NavLink
               key={to}

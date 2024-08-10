@@ -1,6 +1,6 @@
 import { Drawer, Modal, Pill, TextInput } from "@mantine/core";
 import {
-    ArrowLeftIcon,
+    ArrowLeftIcon, CalendarMinusIcon,
     ChevronRightIcon,
     CoinsIcon,
     CreditCardIcon,
@@ -9,7 +9,7 @@ import {
     HashIcon,
     LandmarkIcon,
     PlusIcon,
-    RefreshCcw,
+    RefreshCcw, Rows2,
     ShieldAlert,
 } from "lucide-react";
 import {
@@ -55,7 +55,7 @@ export function CO() {
   );
 }
 
-const options = ["1M", "3M", "6M", "1Y", "ALL"];
+export const options = ["1M", "3M", "6M", "1Y", "ALL"];
 
 export function TabGroup({
   options,
@@ -68,7 +68,7 @@ export function TabGroup({
   return (
     <div
       className={
-        "flex p-1 rounded-xl w-full bg-gray-100 gap-2 " +
+        "flex p-0.5 rounded-xl w-full bg-gray-100 gap-2 " +
         `justify-between border border-gray-800 ${className}`
       }
     >
@@ -76,7 +76,7 @@ export function TabGroup({
         <Button
           variant={"ghost"}
           key={o}
-          className={`rounded-lg border 
+          className={`rounded-lg border h-8
          ${selected === o ? "!bg-white border-gray-800" : "border-gray-100"}`}
           onClick={() => setSelected(o)}
         >
@@ -158,6 +158,32 @@ export function AccountDetails({ bank }: { bank: Bank }) {
             <TabGroup options={options} />
           </CardFooter>
         </Card>
+
+          <Card
+              onClick={() => {
+                  navigate("/planning");
+              }}
+              className={"hoverable-card"}
+          >
+              <CardHeader>
+                  <CardTitle>Deadlines</CardTitle>
+                  <CardDescription>Payment deadlines</CardDescription>
+              </CardHeader>
+
+              <CardContent className={"gap-4 flex flex-col"}>
+                  {!bank.accounts.Credit ? <p>No deadlines found.</p> :
+                      <Row2
+                          name={`In ${Math.ceil(
+                              (new Date("2024-08-20").getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
+                          )} days`}
+                          description={"Credit card payment"}
+                          icon={<CalendarMinusIcon/>}
+                          value={"$"+bank.accounts.Credit.balance.toFixed(2)}
+                      />
+                  }
+
+              </CardContent>
+          </Card>
 
         <Card
           onClick={() => {
@@ -433,7 +459,7 @@ export default function Accounts() {
           <h1 className="text-xl font-bold">Accounts</h1>
           <Link to={"/accounts-add"}>
             <Button variant={"secondary"} className={"flex gap-2"}>
-              <PlusIcon /> Add
+              <PlusIcon /> Add Account
             </Button>
           </Link>
         </div>
