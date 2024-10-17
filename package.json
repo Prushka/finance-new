@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "format": "prettier --write .",
     "deploy": "vite build && echo 'f.lyu.sh' > ./dist/CNAME && echo '' > ./dist/.nojekyll && npx gh-pages -d dist -t true",
-    "deploy-new": "vite build && echo 'f-new.lyu.sh' > ./dist/CNAME && echo '' > ./dist/.nojekyll && npx gh-pages -d dist -t true -r https://github.com/Prushka/finance-new.git"
+    "deploy-new": "vite build && echo 'f.lyu.sh' > ./dist/CNAME && echo '' > ./dist/.nojekyll && npx gh-pages -d dist -t true -r https://github.com/Prushka/finance-new.git",
   },
   "keywords": [
     "pwa",
