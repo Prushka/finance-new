@@ -9,8 +9,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "format": "prettier --write .",
-    "deploy": "vite build && echo 'f.lyu.sh' > ./dist/CNAME && echo '' > ./dist/.nojekyll && npx gh-pages -d dist -t true",
-    "deploy-new": "vite build && echo 'f.lyu.sh' > ./dist/CNAME && echo '' > ./dist/.nojekyll && npx gh-pages -d dist -t true -r https://github.com/Prushka/finance-new.git"
+    "deploy-new": "vite build && echo 'f.lyu.sh' > ./dist/CNAME && echo '' > ./dist/.nojekyll && npx gh-pages -d dist -t true -r https://github.com/Prushka/uiux-finance.git"
   },
   "keywords": [
     "pwa",
